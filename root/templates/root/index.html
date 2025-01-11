@@ -1,0 +1,14 @@
+{% extends "root/base.html" %}
+
+{% block title %}
+    <title>ROSEFLOURISH</title>
+{% endblock title %}
+
+{% block content %}
+    <div class="d-flex flex-column align-items-center text-center">
+        <h1 class="display-3">HOME PAGE</h1>
+        {% if user.is_authenticated %}
+            <p class="display-6">WELCOME, {{ user.first_name }} {{ user.last_name }}!</p>
+        {% endif %}
+    </div>
+{% endblock content %}

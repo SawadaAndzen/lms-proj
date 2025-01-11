@@ -1,0 +1,29 @@
+{% extends "root/base.html" %}
+
+{% block title %}
+<title>ROSEFLOURISH - Login</title>
+{% endblock %}
+
+{% block content %}
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+  <div class="row align-items-center g-lg-5 py-5">
+    <div class="col-lg-4 text-center text-lg-start">
+      <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Login</h1>
+      <p class="fs-4 text-center">
+        Login page
+      </p>
+    </div>
+
+    <div class="col-lg-8">
+      <form method="POST" class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="w-100 btn btn-lg btn-primary rounded-pill" type="submit">Login</button>
+        <hr class="my-1">
+        <small class="text-body-secondary justify-items-center">Don't have a account? Then, you can <a href='/signup/'>sign up</a>.</small>
+        </small>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
