@@ -15,7 +15,7 @@
     </div>
 
     <div class="col-lg-8">
-      <form method="POST" class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
+      <form method="POST" class="p-4 p-md-5 border rounded-3">
         {% csrf_token %}
         {{ form.as_p }}
         <button class="w-100 btn btn-lg btn-primary rounded-pill" type="submit">Login</button>

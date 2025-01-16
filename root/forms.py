@@ -1,7 +1,10 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
 from django.contrib.auth.models import User
-        
+from django import forms
+from .models import Profile
 
+
+#AUTH
 class CustomSignUpForm(UserCreationForm):
     class Meta:
         model = User
@@ -31,3 +34,48 @@ class CustomLoginForm(AuthenticationForm):
         
         self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Username'})
         self.fields['password'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Password'})
+        
+   
+#USER CUSTOMIZATION
+class CustomUserChangeForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name']
+        
+    def __init__(self, *args, **kwargs):
+        super(CustomUserChangeForm, self).__init__(*args, **kwargs)
+
+        self.fields['first_name'].widget.attrs.update({'class': 'form-control', 'placeholder': 'New first name.'})
+        self.fields['last_name'].widget.attrs.update({'class': 'form-control', 'placeholder': 'New last name.'})
+        
+        self.fields.pop('password', None)
+        
+        
+class CustomChangePasswordForm(PasswordChangeForm):
+    class Meta:
+        model = User
+        fields = ["old_password", "new_password1", "new_password2"]
+        
+    def __init__(self, *args, **kwargs):
+        super(CustomChangePasswordForm, self).__init__(*args, **kwargs)
+
+        self.fields['old_password'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Old password.'})
+        self.fields['new_password1'].widget.attrs.update({'class': 'form-control', 'placeholder': 'New password.'})
+        self.fields['new_password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Confirm new password.'})
+        
+        self.fields['new_password1'].help_text = None
+        
+        
+#PROFILE
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['pfp', 'desc']
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+
+        self.fields['pfp'].widget.attrs.update({'class': 'form-control'})
+        self.fields['desc'].widget.attrs.update({'class': 'form-control'})
+        
+        self.fields['desc'].required = False
