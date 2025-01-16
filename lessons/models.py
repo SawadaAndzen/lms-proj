@@ -4,7 +4,7 @@ from tasks.models import Task
 
 class Lesson(models.Model):
     name = models.CharField(max_length = 50)
-    tasks = models.ManyToManyField(Task, null = True, blank = True)
+    tasks = models.ManyToManyField(Task, blank = True)
     
     def __str__(self):
         return self.name
