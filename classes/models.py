@@ -7,7 +7,7 @@ from courses.models import Course
 class Class(models.Model):
     name = models.CharField(max_length = 50)
     desc = models.TextField()
-    course = models.ForeignKey(Course, on_delete = models.CASCADE)
+    course = models.ForeignKey(Course, on_delete = models.CASCADE, null = True)
     teacher = models.ForeignKey(
         User, 
         on_delete = models.SET_NULL, 
