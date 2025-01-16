@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 
 
 class Task(models.Model):
-    lesson = ...
     name = models.CharField(max_length = 50)
     desc = models.TextField()
     media = models.FileField(upload_to = 'tasks/files/', null = True, blank = True)
