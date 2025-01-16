@@ -14,3 +14,17 @@ class Profile(models.Model):
     
     def __str__(self):
         return f"@{self.user.username}'s profile"
+    
+    
+class Role(models.Model):
+    ROLES = [
+        ('student', 'Student'), 
+        ('teacher', 'Teacher'), 
+        ('admin', 'Admin')
+            ]
+    
+    user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "role")
+    role = models.CharField(max_length = 7, choices = ROLES)
+    
+    def __str__(self):
+        return f'@{self.user.username} - {self.role}'
