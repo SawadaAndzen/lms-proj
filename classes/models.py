@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from root.models import Role
+from courses.models import Course
 
 
 class Class(models.Model):
     name = models.CharField(max_length = 50)
     desc = models.TextField()
-    course = ...
+    course = models.ForeignKey(Course, on_delete = models.CASCADE)
     teacher = models.ForeignKey(
         User, 
         on_delete = models.SET_NULL, 
