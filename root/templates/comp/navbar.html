@@ -4,7 +4,7 @@
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg bg-body-tertiary py-2">
   <div class="container-fluid">
     <a href="/" class="d-flex align-items-center">
-      <img src="{% static 'img/root/root-ico.png' %}" alt="Project Icon" width="40" height="40" class="me-2">
+      <img src="{% static 'img/root/root-icon.png' %}" alt="Project Icon" width="40" height="40" class="me-2">
       <span class="navbar-brand display-6 mb-0"><b>ROSEFLOURISH</b></span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +27,7 @@
             </a>
           <ul class="dropdown-menu mt-3">
             <li><a class="dropdown-item" href="{% url 'profile' username=user.username %}"><i class="bi bi-person-circle"></i> Profile</a></li>
+            <li><a class="dropdown-item" href="{% url 'groups-list'%}"><i class="bi bi-people-fill"></i> My Classes</a></li>
             <li>
               <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
