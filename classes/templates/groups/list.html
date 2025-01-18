@@ -1,0 +1,32 @@
+{% extends "root/base.html" %}
+{% load root_tags %}
+
+
+{% block title %}
+    <title>ROSEFLOURISH - My classes</title>
+{% endblock title %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-start mt-3 ms-2">
+    <div class="ms-3 me-3 mt-3 list-container container-sm border rounded-3">
+        <h1 class="text-center mb-4">My classes</h1>
+        <div class="row">
+            {% for group in groups %}
+                <div class="col-md-auto col-lg-auto ms-auto me-auto">
+                    <div class="card mb-4 overflow-auto" style="max-height: 400px;">
+                        <div class="card-body">
+                            <h3>
+                                Name: {{ group.name }}
+                                <a href = "{% url 'group-detail' pk=group.pk %}">
+                                    <i class="bi bi-eye bi-primary"></i>
+                                </a>
+                            </h3>
+                            <h4>Course: {{ group.course.name }} ({{ group.course.modules.count }} module(s), {{ group.course.modules|total_lessons }} lesson(s))</h4>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
