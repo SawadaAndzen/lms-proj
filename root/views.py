@@ -27,7 +27,7 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         self.request.session['success_message'] = f"Hi, {self.request.user.username}!"
         
-        return reverse('index')
+        return reverse_lazy('profile', kwargs={'username': self.request.user.username})
     
     
 #PROFILE

@@ -25,23 +25,28 @@
           {% if user.profile.first.pfp %}
             <img src="{{ user.profile.first.pfp.url }}" alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
           {% endif %}
-            <a class="nav-link dropdown-toggle display-3 fs-5 text-secondary me-2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ user.first_name }}
+            <a class="nav-link dropdown-toggle fs-5 text-secondary" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ user.first_name }} {{ user.last_name }}
             </a>
-          <ul class="dropdown-menu mt-3">
-            <li><a class="dropdown-item" href="{% url 'profile' username=user.username %}"><i class="bi bi-person-circle"></i> Profile</a></li>
-            <li><a class="dropdown-item" href="{% url 'groups-list'%}"><i class="bi bi-people-fill"></i> My Classes</a></li>
-            <li>
-              <form method="post" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-left"></i> Logout</button>
-              </form>
-            </li>
-            {% if user.is_staff %}
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/admin/"><i class="bi bi-journal-code"></i> Administration</a></li>
-            {% endif %}
-          </ul>
+            <ul class="dropdown-menu mt-3">
+              <li><a class="dropdown-item" href="{% url 'profile' username=user.username %}"><i class="bi bi-person-circle"></i> Profile</a></li>
+          
+              {% if user.teacher.exists or user.students.exists %}
+                <li><a class="dropdown-item" href="{% url 'groups-list' %}"><i class="bi bi-people-fill"></i> My Classes</a></li>
+              {% endif %}
+          
+              <li>
+                <form method="post" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-left"></i> Logout</button>
+                </form>
+              </li>
+          
+              {% if user.is_staff %}
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/admin/"><i class="bi bi-journal-code"></i> Administration</a></li>
+              {% endif %}
+            </ul>
         </div>
       {% else %}
         <div class="d-flex ms-auto">
