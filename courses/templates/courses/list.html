@@ -1,0 +1,51 @@
+{% extends "root/base.html" %}
+{% load root_tags %}
+
+
+{% block title %}
+    <title>ROSEFLOURISH - Courses</title>
+{% endblock title %}
+
+{% block content %}
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="d-flex justify-content-center align-items-start mt-3 ms-2">
+    <div class="ms-3 me-3 mt-3 list-container container-sm border rounded-3">
+        <h1 class="text-center mb-4">All Courses</h1>
+        <div class="row">
+            {% for course in courses %}
+                <div class="col-md-auto col-lg-auto ms-auto me-auto">
+                    <div class="card mb-4 overflow-auto" style="max-height: 400px;">
+                        <div class="card-body">
+                            <h3>
+                                <h4>{{ course.name }}</h4>
+                                <h6
+                                class = "text-secondary fs-6"
+                                style = "width: 450px; white-space: nowrap; 
+                                overflow: hidden; 
+                                text-overflow: ellipsis;">
+                                    {{course.desc}}
+                                </h6>
+                                <div class = 'd-flex justify-content-between'>
+                                    <a class = "btn btn-primary" href = "{% url "course-detail" pk=course.pk %}">
+                                        <i class="bi bi-eye bi-primary"></i> Read
+                                    </a>
+                                    <text class = "text-secondary">{% if course.price > 0 %} {{course.price}}$ {% else %} FREE {% endif %}</text>
+                                </div>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -6,6 +6,7 @@ class Profile(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'profile')
     pfp = models.ImageField(upload_to = 'profile/pfp/', blank = True, null = True, default='static/profile/default-pfp.jpg')
     desc = models.TextField()
+    cash = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0)
     
     def save(self, *args, **kwargs):
         if not self.pfp:
