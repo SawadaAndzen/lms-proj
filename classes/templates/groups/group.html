@@ -11,7 +11,12 @@
         <div class = "col">
             <h1>{{group.name}}</h1>
             <p> Description: {{group.desc}}</p>
-            <p>Course: {{ group.course.name }} ({{ group.course.modules.count }} module(s), {{ group.course.modules|total_lessons }} lesson(s))</p>
+            <p>
+                Course: {{ group.course.name }} ({{ group.course.modules.count }} module(s), {{ group.course.modules|total_lessons }} lesson(s))
+                <a href = "{% url 'course' pk=group.course.pk %}">
+                    <i class="bi bi-eye bi-primary"></i>
+                </a>
+            </p>
             <p>Teacher: {{ group.teacher.first_name}} {{ group.teacher.last_name}} <small>@{{group.teacher.username}}</small></p>
             <p>Students ({{group.students.count}}):</p>
             <ul style = "list-style: none;">

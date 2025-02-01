@@ -46,11 +46,12 @@
                                     <div class="d-flex flex-wrap">
                                         {% for task in lesson.tasks.all %}
                                             <div class="text-center me-3 position-relative">
-                                                <div class="rounded-circle text-white d-flex align-items-center justify-content-center 
+                                                <a  href = "{% url 'task-detail' pk=course.pk task_pk=task.pk %}"
+                                                    class="rounded-circle text-white d-flex align-items-center justify-content-center 
                                                     {% if task.is_done %} bg-success {% else %} bg-secondary {% endif %}"
                                                     style="width: 80px; height: 80px; font-size: 20px;">
                                                     {{ forloop.counter }}
-                                                </div>
+                                                </a>
                                                 <small class="d-block" 
                                                 style = "width: 100px; white-space: nowrap; 
                                                 overflow: hidden; 

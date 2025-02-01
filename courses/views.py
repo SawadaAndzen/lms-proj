@@ -42,6 +42,7 @@ class CourseView(DetailView):
         progress = (completed_tasks / total_tasks * 100) if total_tasks > 0 else 0
         
         context["progress"] = int(progress)
+        
         return context
 
 

@@ -11,42 +11,21 @@
       <span class="navbar-toggler-icon"><i class="bi bi-list"></i></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-house"></i> Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="/courses/"><i class="bi bi-collection"></i> Courses</a></li>
-      </ul>
-
+    <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
       {% if user.is_authenticated %}
-
         <div class = "nav-item dropdown d-flex align-items-center">
           <a href = "#" class = "text-secondary me-1"><i class="bi bi-cart4"></i></a>
           <text class = "text-secondary me-3">{{ user.profile.first.cash }}$</text>
           {% if user.profile.first.pfp %}
             <img src="{{ user.profile.first.pfp.url }}" alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
           {% endif %}
-            <a class="nav-link dropdown-toggle fs-5 text-secondary" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ user.first_name }} {{ user.last_name }}
-            </a>
-            <ul class="dropdown-menu mt-3">
-              <li><a class="dropdown-item" href="{% url 'profile' username=user.username %}"><i class="bi bi-person-circle"></i> Profile</a></li>
-          
-              {% if user.teacher.exists or user.students.exists %}
-                <li><a class="dropdown-item" href="{% url 'groups-list' %}"><i class="bi bi-people-fill"></i> My Classes</a></li>
-              {% endif %}
-          
-              <li>
-                <form method="post" action="{% url 'logout' %}">
-                  {% csrf_token %}
-                  <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-left"></i> Logout</button>
-                </form>
-              </li>
-          
-              {% if user.is_staff %}
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="/admin/"><i class="bi bi-journal-code"></i> Administration</a></li>
-              {% endif %}
-            </ul>
+            <text class = "ms-2 fs-6">{{ user.first_name }}</text>
+            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+              {% csrf_token %}
+              <button type="submit" class="ms-2 btn btn-link text-white p-1">
+                  <i class="bi bi-box-arrow-left"></i>
+              </button>
+          </form>          
         </div>
       {% else %}
         <div class="d-flex ms-auto">

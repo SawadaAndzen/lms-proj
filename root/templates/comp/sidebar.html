@@ -1,0 +1,25 @@
+{% load static %}
+
+
+<div class="d-flex flex-column flex-shrink-0 p-2 bg-dark text-white" style="width: 260px; height: 100vh; position: fixed;">
+  <hr>
+  <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item"><a href="/" class="nav-link text-white"><i class="bi bi-house"></i> Home</a></li>
+      <li><a href="/courses/" class="nav-link text-white"><i class="bi bi-book"></i> Courses</a></li>
+      {% if user.teacher.exists or user.students.exists %}
+        <li><a href="/groups/" class="nav-link text-white"><i class="bi bi-people-fill"></i> Classes</a></li>
+      {% else %}
+      <li><a href="/groups/" class="nav-link text-secondary disabled"><i class="bi bi-people-fill"></i> Classes</a></li>
+      {% endif %}
+      <hr>
+      {% if user.is_authenticated %}
+        <li><a class="nav-link text-white" href="{% url 'profile' username=user.username %}"><i class="bi bi-person-circle"></i> Profile</a></li>
+        {% if user.is_staff %}
+          <li><a class="nav-link text-white" href="/admin/"><i class="bi bi-journal-code"></i> Administration</a></li>
+        {% endif %}
+        <li><a href="#" class="nav-link text-white"><i class="bi bi-gear"></i> Settings</a></li>
+      {% endif %}
+    </ul>
+
+    {% include "comp/footer.html" %}
+</div>
