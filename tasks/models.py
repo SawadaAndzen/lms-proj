@@ -19,3 +19,14 @@ class TaskAnswer(models.Model):
     
     def __str__(self):
         return f"@{self.user.username}'s answer for {self.task}"
+    
+    
+class Comment(models.Model):
+    task = models.ForeignKey(Task, on_delete = models.CASCADE)
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    content = models.TextField()
+    media = models.FileField(upload_to = "tasks/comments/", blank = True, null = True)
+    created_at = models.DateTimeField()
+
+    def __str__(self):
+        return f"Comment by {self.user} for the task: {self.task}"
