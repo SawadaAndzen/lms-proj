@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LogoutView
 from django.views.generic import TemplateView
-from .views import SignUpView, CustomLoginView, CustomPasswordView, UserUpdate, ProfileDetailView, UpdateProfileView
+from .views import SignUpView, CustomLoginView, CustomPasswordView, UserUpdate, ProfileDetailView, UpdateProfileView, ProfileAPI
 
 
 urlpatterns = [
@@ -13,4 +13,5 @@ urlpatterns = [
     path('profile/<str:username>/update/', UpdateProfileView.as_view(), name = 'update-profile'),
     path('users/update/<str:username>/data/', UserUpdate.as_view(), name = 'user-update'),
     path("users/update/<str:username>/data/password/", CustomPasswordView.as_view(), name = "change-password"),
+    path("api/profile/all/", ProfileAPI.as_view(), name = "profile-api"),
 ]

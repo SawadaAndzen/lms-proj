@@ -12,6 +12,15 @@ class Course(models.Model):
     def __str__(self):
         return self.name
     
+    
+class CourseInstance(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    progress = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f"{self.user.username}'s {self.course.name} instance"
+
 
 class JoinRequest(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
