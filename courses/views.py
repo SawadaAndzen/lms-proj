@@ -6,7 +6,8 @@ from django.views.generic import ListView, DetailView, TemplateView
 from django.views import View
 from django.views.generic.edit import CreateView
 from root.models import Profile
-from .models import JoinRequest, Course
+from tasks.models import InstanceTask
+from .models import Course, CourseInstance, JoinRequest
 
 
 class CoursesListView(ListView):
@@ -29,26 +30,33 @@ class CourseView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
         course = self.get_object()
         total_tasks = 0
-        completed_tasks = 0
+        completed_tasks_ids = []
+
+        print(f"Checking completed tasks for user: {self.request.user.username}")
 
         for module in course.modules.all():
             for lesson in module.lessons.all():
                 total_tasks += lesson.tasks.count()
-                completed_tasks += lesson.tasks.filter(is_done=True).count()
+                for task in lesson.tasks.all():
+                    instance_task = InstanceTask.objects.filter(task=task, user=self.request.user).first()
 
-        progress = (completed_tasks / total_tasks * 100) if total_tasks > 0 else 0
+                    if instance_task and instance_task.is_done:
+                        completed_tasks_ids.append(str(task.id))
+
+                print(f"Completed tasks for lesson {lesson.name}: {completed_tasks_ids}")
+
+        progress = (len(completed_tasks_ids) / total_tasks * 100) if total_tasks > 0 else 0
         
         context["progress"] = int(progress)
-        
+        context["completed_tasks_ids"] = completed_tasks_ids
+
         return context
 
 
-class CreateRequest(CreateView):
-    model = JoinRequest
-
+class CreateRequest(View):
     def post(self, request, *args, **kwargs):
         course_id = self.kwargs.get('pk')
         course = get_object_or_404(Course, id=course_id)
@@ -59,9 +67,19 @@ class CreateRequest(CreateView):
             profile.save()
 
             JoinRequest.objects.create(user=request.user, course=course)
-
-            messages.success(request, "Course join request pent successfully!")
             
+            course_instance = CourseInstance.objects.create(user=request.user, course=course)
+
+            for module in course.modules.all():
+                for lesson in module.lessons.all():
+                    for task in lesson.tasks.all():
+                        InstanceTask.objects.create(
+                            user=request.user, 
+                            course_instance=course_instance,
+                            task=task
+                        )
+
+            messages.success(request, "Join request was sent successfully!")
         else:
             messages.error(request, "Insufficient balance to join this course.")
         

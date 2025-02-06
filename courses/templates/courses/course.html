@@ -19,13 +19,13 @@
     </div>
     <p class="text-muted">{{ course.desc }}</p>
 
+    {% if course.modules.exists %}
     <div class="row">
         <div class="col-md-3">
             <h4 class="fw-bold">MODULES</h4>
             <ul class="list-group">
                 {% for module in course.modules.all %}
-                    <li class="list-group-item module-item {% if forloop.first %} active {% endif %}"
-                        data-module-id="module-{{ forloop.counter }}">
+                    <li class="list-group-item module-item" data-module-id="module-{{ forloop.counter }}">
                         <strong>{{ forloop.counter }}. {{ module.name }}</strong>
                     </li>
                 {% endfor %}
@@ -34,42 +34,49 @@
 
         <div class="col-md-9">
             {% for module in course.modules.all %}
-                <div class="module-content {% if not forloop.first %} d-none {% endif %}" id="module-{{ forloop.counter }}">
+                <div class="module-content d-none" id="module-{{ forloop.counter }}">
                     <div class="card mb-4">
                         <div class="card-header bg-dark text-white">
                             <h5 class="mb-0">MODULE {{ forloop.counter }}: {{ module.name }}</h5>
                         </div>
                         <div class="card-body">
-                            {% for lesson in module.lessons.all %}
-                                <div class="mb-3 p-3 border rounded">
-                                    <h4>LESSON {{ forloop.counter }}: {{ lesson.name }}</h4>
-                                    <div class="d-flex flex-wrap">
-                                        {% for task in lesson.tasks.all %}
+                            {% if module.lessons.exists %}
+                                {% for lesson in module.lessons.all %}
+                                    <div class="mb-3 p-3 border rounded">
+                                        <h4>LESSON {{ forloop.counter }}: {{ lesson.name }}</h4>
+                                        <div class="d-flex flex-wrap">
+                                            {% for task in lesson.tasks.all %}
                                             <div class="text-center me-3 position-relative">
-                                                <a  href = "{% url 'task-detail' pk=course.pk task_pk=task.pk %}"
-                                                    class="rounded-circle text-white d-flex align-items-center justify-content-center 
-                                                    {% if task.is_done %} bg-success {% else %} bg-secondary {% endif %}"
-                                                    style="width: 80px; height: 80px; font-size: 20px;">
+                                                <a href="{% url 'task-detail' pk=course.pk task_pk=task.pk %}"
+                                                   class="rounded-circle text-white d-flex align-items-center justify-content-center
+                                                   {% if task.id|stringformat:"s" in completed_tasks_ids %} bg-success {% else %} bg-secondary {% endif %}"
+                                                   style="width: 80px; height: 80px; font-size: 20px;">
                                                     {{ forloop.counter }}
                                                 </a>
-                                                <small class="d-block" 
-                                                style = "width: 100px; white-space: nowrap; 
-                                                overflow: hidden; 
-                                                text-overflow: ellipsis;">
+                                                <small class="d-block"
+                                                       style="width: 100px; white-space: nowrap; 
+                                                       overflow: hidden; 
+                                                       text-overflow: ellipsis;">
                                                     {{ task.name }}
                                                 </small>
                                             </div>
-                                        {% endfor %}
+                                        {% endfor %}                                        
+                                        </div>
                                     </div>
-                                </div>
-                            {% endfor %}
+                                {% endfor %}
+                            {% else %}
+                                <p class="text-muted">No lessons available in this module.</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     </div>
+    {% else %}
+        <p class="text-muted">No modules available for this course.</p>
+    {% endif %}
 </div>
 
-<script src = "{% static "js/courses/module_selection.js" %}"></script>
+<script src="{% static 'js/courses/module_selection.js' %}"></script>
 {% endblock content %}

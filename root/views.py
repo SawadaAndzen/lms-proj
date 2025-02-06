@@ -1,9 +1,11 @@
 from django.urls import reverse, reverse_lazy
+from rest_framework import generics
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.views.generic import CreateView, DetailView, UpdateView
 from .forms import CustomSignUpForm, CustomLoginForm, ProfileForm, CustomChangePasswordForm, CustomUserChangeForm
 from .models import Profile
+from .serializers import ProfileSerializer
 
 
 #AUTH
@@ -97,3 +99,8 @@ class CustomPasswordView(PasswordChangeView):
     
     def get_success_url(self):
         return reverse_lazy('profile', kwargs={'username': self.request.user.username})
+    
+    
+class ProfileAPI(generics.ListCreateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
