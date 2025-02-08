@@ -29,3 +29,13 @@ class Role(models.Model):
     
     def __str__(self):
         return f'@{self.user.username} - {self.role}'
+    
+
+class Message(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    media = models.FileField(upload_to='chat_media/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Message by @{self.user.username}"

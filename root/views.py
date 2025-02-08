@@ -1,14 +1,17 @@
 from django.urls import reverse, reverse_lazy
-from django.shortcuts import get_object_or_404
+from django.utils import timezone
+from django.shortcuts import get_object_or_404, redirect
 from django.http import JsonResponse
-from rest_framework import generics
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, PasswordChangeView
-from django.views.generic import CreateView, DetailView, UpdateView, TemplateView, View
-from tasks.models import TaskAnswer, Grade
-from .forms import CustomSignUpForm, CustomLoginForm, ProfileForm, CustomChangePasswordForm, CustomUserChangeForm
-from .models import Profile
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, TemplateView, View
+from rest_framework import generics
+from tasks.models import TaskAnswer, Grade, InstanceTask
+from .forms import MessageForm, CustomSignUpForm, CustomLoginForm, ProfileForm, CustomChangePasswordForm, CustomUserChangeForm
+from .models import Profile, Message
 from .serializers import ProfileSerializer
+
+import json
 
 
 class Index(TemplateView):
@@ -105,6 +108,31 @@ class CustomPasswordView(PasswordChangeView):
         return reverse_lazy('profile', kwargs={'username': self.request.user.username})
     
     
+class Forum(ListView):
+    model = Message
+    template_name = "root/forum.html"
+    context_object_name = 'messages'
+    paginate_by = 9
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context.update({"messages_form": MessageForm(),})
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = MessageForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            mss = form.save(commit=False)
+            mss.user = request.user
+            mss.created_at = timezone.now()
+            mss.save()
+            
+        return redirect('forum')
+    
+    
 class AddGradeView(View):
     def post(self, request, *args, **kwargs):
         answer_id = request.POST.get("answer_id")
@@ -122,6 +150,31 @@ class AddGradeView(View):
             'grade': grade.grade,
             'answer_id': answer.id
         })
+
+
+class ToggleTaskStatusView(View):
+    def post(self, request, *args, **kwargs):
+        if not request.user.role.filter(role="teacher").exists():
+            return JsonResponse({'success': False, 'message': 'Permission denied'}, status=403)
+
+        try:
+            data = json.loads(request.body)
+            answer_id = data.get('answer_id')
+
+            instance_task = InstanceTask.objects.get(
+                task_id=answer_id,
+                user=TaskAnswer.objects.get(id=answer_id).user
+            )
+            instance_task.is_done = not instance_task.is_done
+            instance_task.save()
+
+            return JsonResponse({'success': True, 'is_done': instance_task.is_done})
+
+        except (InstanceTask.DoesNotExist, TaskAnswer.DoesNotExist):
+            return JsonResponse({'success': False, 'message': 'Task not found'}, status=404)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'message': 'Invalid JSON'}, status=400)
 
     
 class ProfileAPI(generics.ListCreateAPIView):
