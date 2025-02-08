@@ -17,9 +17,13 @@
             <div class = "card shadow-0 border" style="background-color: #f0f2f5;">
                 <div class = "card-body p-3">
                     {% for answer in answers %}
-                        <p><a class="small" href="{{ answer.media.url }}">{{ answer.media.url|truncatechars:10 }}</a></p>
-                        {% empty %}
-                        <p>No answers yet.</p>
+                        {% if answer.media %}
+                            <p><a class="small" href="{{ answer.media.url }}">{{ answer.media.url|truncatechars:10 }}</a></p>
+                        {% else %}
+                            <p>No media attached.</p>
+                        {% endif %}
+                    {% empty %}
+                    <p>No answers yet.</p>
                     {% endfor %}
                     <form method="POST" enctype = "multipart/form-data" class="d-flex align-items-center">
                         {% csrf_token %}

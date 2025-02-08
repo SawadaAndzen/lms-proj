@@ -17,6 +17,13 @@
         {% if user.is_staff %}
           <li><a class="nav-link text-white" href="/admin/"><i class="bi bi-journal-code"></i> Administration</a></li>
         {% endif %}
+        {% if user.teacher.exists %}
+          <li>
+            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#answersModal">
+              <i class="bi bi-check-circle"></i> Review Answers
+            </a>
+          </li>
+        {% endif %}
         <li><a href="#" class="nav-link text-white"><i class="bi bi-gear"></i> Settings</a></li>
       {% endif %}
     </ul>
