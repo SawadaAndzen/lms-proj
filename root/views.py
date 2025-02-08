@@ -1,14 +1,20 @@
 from django.urls import reverse, reverse_lazy
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 from rest_framework import generics
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, PasswordChangeView
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, UpdateView, TemplateView, View
+from tasks.models import TaskAnswer, Grade
 from .forms import CustomSignUpForm, CustomLoginForm, ProfileForm, CustomChangePasswordForm, CustomUserChangeForm
 from .models import Profile
 from .serializers import ProfileSerializer
 
 
-#AUTH
+class Index(TemplateView):
+    template_name = "root/index.html"
+
+
 class SignUpView(CreateView):
     model = User
     form_class = CustomSignUpForm
@@ -32,7 +38,6 @@ class CustomLoginView(LoginView):
         return reverse_lazy('profile', kwargs={'username': self.request.user.username})
     
     
-#PROFILE
 class ProfileDetailView(DetailView):
     model = Profile
     template_name = 'root/profile/profile.html'
@@ -78,7 +83,6 @@ class UpdateProfileView(UpdateView):
         return super().form_valid(form)
     
     
-#USER CUSTOMIZATION
 class UserUpdate(UpdateView):
     model = User
     form_class = CustomUserChangeForm
@@ -100,6 +104,25 @@ class CustomPasswordView(PasswordChangeView):
     def get_success_url(self):
         return reverse_lazy('profile', kwargs={'username': self.request.user.username})
     
+    
+class AddGradeView(View):
+    def post(self, request, *args, **kwargs):
+        answer_id = request.POST.get("answer_id")
+        grade_value = request.POST.get("grade")
+
+        answer = get_object_or_404(TaskAnswer, id=answer_id)
+        grade, created = Grade.objects.update_or_create(
+            task=answer.task, 
+            user=answer.user, 
+            defaults={"grade": grade_value}
+        )
+
+        return JsonResponse({
+            'success': True,
+            'grade': grade.grade,
+            'answer_id': answer.id
+        })
+
     
 class ProfileAPI(generics.ListCreateAPIView):
     queryset = Profile.objects.all()
