@@ -1,3 +1,6 @@
+{% load static %}
+
+
 <div class="modal fade" id="answersModal" tabindex="-1" aria-labelledby="answersModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -8,7 +11,19 @@
       <div class="modal-body">
         {% for answer in global_answers %}
         <div class="border p-2 mb-2">
-          <p><strong>@{{ answer.user.username }}</strong> ({{ answer.task }}) <small>{{ answer.created_at }}</small></p>
+          <p>
+            <strong>@{{ answer.user.username }}</strong> 
+            ({{ answer.task }}) <small>{{ answer.created_at }}</small>
+            <text id="task-status-{{ answer.id }}" 
+            class = "{% if answer.task.instancetask.is_done %} text-success {% else %} text-danger {% endif %}">
+              {% if answer.task.instancetask.is_done %}<i class="bi bi-check-circle"></i>{% else %}<i class="bi bi-slash-circle"></i>{% endif %}
+            </text>
+            <button class="btn btn-outline-warning rounded-pill toggle-task-status"
+              data-answer-id="{{ answer.id }}"
+              data-url="/toggle-task-status/">
+              <small>{% if answer.task.instancetask.is_done %}Mark as undone{% else %}Mark as done{% endif %}</small>
+            </button>
+          </p>
           {% if answer.media %}
             <a href="{{ answer.media.url }}" target="_blank">View Submission</a>
           {% else %}
@@ -31,4 +46,7 @@
 
 <script>
   var addGradeUrl = "{% url 'add-grade' %}";
+  var toggleTaskStatusUrl = "{% url 'toggle-task-status' %}";
 </script>
+
+<script src = "{% static "js/teacher/mark_as_done.js" %}"></script>

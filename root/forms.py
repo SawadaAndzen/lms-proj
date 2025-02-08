@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Profile
+from .models import Profile, Message
 
 
 #AUTH
@@ -79,3 +79,25 @@ class ProfileForm(forms.ModelForm):
         self.fields['desc'].widget.attrs.update({'class': 'form-control'})
         
         self.fields['desc'].required = False
+        
+        
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ["content", "media"]
+        labels = {'content': '', 'media': ''}
+        widgets = {
+            'content': forms.Textarea(attrs={
+                'class': 'form-control',
+                'style': 'border:none; resize:none',
+                'rows': 1,
+                'cols': 50,
+                'placeholder': 'Type here...',
+            }),
+            'media': forms.FileInput(attrs={
+                'class': 'form-control d-none',
+            }),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super(MessageForm, self).__init__(*args, **kwargs)
