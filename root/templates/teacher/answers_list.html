@@ -15,14 +15,20 @@
             <strong>@{{ answer.user.username }}</strong> 
             ({{ answer.task }}) <small>{{ answer.created_at }}</small>
             <text id="task-status-{{ answer.id }}" 
-            class = "{% if answer.task.instancetask.is_done %} text-success {% else %} text-danger {% endif %}">
-              {% if answer.task.instancetask.is_done %}<i class="bi bi-check-circle"></i>{% else %}<i class="bi bi-slash-circle"></i>{% endif %}
+              class="{% if answer.is_done %} text-success {% else %} text-danger {% endif %}">
+            {% if answer.is_done %}
+              <i class="bi bi-check-circle"></i>
+            {% else %}
+              <i class="bi bi-slash-circle"></i>
+            {% endif %}
             </text>
+      
             <button class="btn btn-outline-warning rounded-pill toggle-task-status"
               data-answer-id="{{ answer.id }}"
               data-url="/toggle-task-status/">
-              <small>{% if answer.task.instancetask.is_done %}Mark as undone{% else %}Mark as done{% endif %}</small>
+              <small>{% if answer.is_done %}Mark as undone{% else %}Mark as done{% endif %}</small>
             </button>
+      
           </p>
           {% if answer.media %}
             <a href="{{ answer.media.url }}" target="_blank">View Submission</a>
