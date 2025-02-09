@@ -161,10 +161,13 @@ class ToggleTaskStatusView(View):
             data = json.loads(request.body)
             answer_id = data.get('answer_id')
 
+            answer = TaskAnswer.objects.get(id=answer_id)
+
             instance_task = InstanceTask.objects.get(
-                task_id=answer_id,
-                user=TaskAnswer.objects.get(id=answer_id).user
+                task=answer.task,
+                user=answer.user
             )
+
             instance_task.is_done = not instance_task.is_done
             instance_task.save()
 
