@@ -8,7 +8,16 @@
 {% block content %}
     <div class = "d-flex row justify-content-between">
         <div class = "col ms-2 mt-2">
-            <h1> {{task.name}}</h1>
+            <h1> 
+                {{ task.name }}
+                {% with task_grade=global_answers|dictsortreversed:"created_at"|first %}
+                    {% if task_grade and task_grade.grade_value is not None %}
+                        <span class="badge text-bg-success">{{ task_grade.grade_value }}</span>
+                    {% else %}
+                        <span class="badge text-bg-secondary">-</span>
+                    {% endif %}
+                {% endwith %}
+            </h1>            
             <p> {{task.desc}}</p>
             <a href="{% url 'course' pk=course.pk %}" class="btn btn-secondary">Back to Course</a>
         </div>
