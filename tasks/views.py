@@ -1,3 +1,5 @@
+from django.db.models import OuterRef, Subquery, Value
+from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DetailView
 from courses.models import Course
@@ -16,6 +18,19 @@ class TaskView(DetailView):
     def get_course(self):
         return Course.objects.filter(modules__lessons__tasks=self.get_object()).distinct().first()
 
+    def get_global_answers(self):
+        return TaskAnswer.objects.filter(task=self.get_object()).select_related("user").annotate(
+            grade_value=Coalesce(
+                Subquery(
+                    Grade.objects.filter(
+                        task=OuterRef('task'),
+                        user=OuterRef('user')
+                    ).values('grade')[:1]
+                ), 
+                Value(None)
+            )
+        )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         task = self.get_object()
@@ -29,19 +44,6 @@ class TaskView(DetailView):
             "answers": answers,
             "answers_form": AnswerForm(),
             "is_teacher": is_teacher,
+            "global_answers": self.get_global_answers(),
         })
         return context
-
-    def post(self, request, *args, **kwargs):
-        task = self.get_object()
-        course = self.get_course()
-        a_form = AnswerForm(request.POST, request.FILES)
-        redirect_url = "task-detail" if course else "course-list"
-     
-        if a_form.is_valid():
-            answer = a_form.save(commit=False)
-            answer.user = request.user
-            answer.task = task
-            answer.save()
-
-        return redirect(redirect_url, pk=course.pk, task_pk=task.pk) if course else redirect("course-list")

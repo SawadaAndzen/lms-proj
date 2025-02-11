@@ -1,4 +1,4 @@
-from django.db.models import OuterRef, Subquery, BooleanField, Value
+from django.db.models import OuterRef, Subquery, BooleanField, Value, IntegerField
 from django.db.models.functions import Coalesce
 from django.contrib.auth.models import User
 from tasks.models import TaskAnswer, Grade
@@ -19,16 +19,18 @@ def answers_with_grades(request):
             course_instance__in=course_instances
         ).values('is_done')[:1]
 
+        grade_subquery = Grade.objects.filter(
+            task=OuterRef('task'),
+            user=OuterRef('user')
+        ).values('grade')[:1]
+
         answers = TaskAnswer.objects.filter(
             task__instancetask__course_instance__in=course_instances,
             user__in=students
         ).select_related("task", "user").annotate(
-            is_done=Coalesce(Subquery(instance_task_subquery, output_field=BooleanField()), Value(False))
+            is_done=Coalesce(Subquery(instance_task_subquery, output_field=BooleanField()), Value(False)),
+            grade_value=Coalesce(Subquery(grade_subquery), Value(None))
         ).order_by("-created_at").distinct()
-
-        for answer in answers:
-            grade = Grade.objects.filter(task=answer.task, user=answer.user).first()
-            answer.grade_value = grade.grade if grade else None
 
         return {"global_answers": answers}
     

@@ -37,7 +37,7 @@
           {% endif %}
           <p id="grade-{{ answer.id }}">
             Grade: {% if answer.grade_value is not None %}{{ answer.grade_value }}{% else %}-{% endif %}
-          </p>
+          </p>        
           <button class="btn btn-primary" data-answer-id="{{ answer.id }}" data-bs-toggle="modal" data-bs-target="#gradeModal">
               Add grade
           </button>
