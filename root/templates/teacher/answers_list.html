@@ -1,0 +1,58 @@
+{% load static %}
+
+
+<div class="modal fade" id="answersModal" tabindex="-1" aria-labelledby="answersModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="answersModalLabel">Student Answers</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% for answer in global_answers %}
+        <div class="border p-2 mb-2">
+          <p>
+            <strong>@{{ answer.user.username }}</strong> 
+            ({{ answer.task }}) <small>{{ answer.created_at }}</small>
+            <text id="task-status-{{ answer.id }}" 
+              class="{% if answer.is_done %} text-success {% else %} text-danger {% endif %}">
+            {% if answer.is_done %}
+              <i class="bi bi-check-circle"></i>
+            {% else %}
+              <i class="bi bi-slash-circle"></i>
+            {% endif %}
+            </text>
+      
+            <button class="btn btn-outline-warning rounded-pill toggle-task-status"
+              data-answer-id="{{ answer.id }}"
+              data-url="/toggle-task-status/">
+              <small>{% if answer.is_done %}Mark as undone{% else %}Mark as done{% endif %}</small>
+            </button>
+      
+          </p>
+          {% if answer.media %}
+            <a href="{{ answer.media.url }}" target="_blank">View Submission</a>
+          {% else %}
+            No files attached.
+          {% endif %}
+          <p id="grade-{{ answer.id }}">
+            Grade: {% if answer.grade_value is not None %}{{ answer.grade_value }}{% else %}-{% endif %}
+          </p>        
+          <button class="btn btn-primary" data-answer-id="{{ answer.id }}" data-bs-toggle="modal" data-bs-target="#gradeModal">
+              Add grade
+          </button>
+          </div>
+          {% empty %}
+          <p class="text-muted">No answers yet.</p>
+        {% endfor %}      
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var addGradeUrl = "{% url 'add-grade' %}";
+  var toggleTaskStatusUrl = "{% url 'toggle-task-status' %}";
+</script>
+
+<script src = "{% static "js/teacher/mark_as_done.js" %}"></script>

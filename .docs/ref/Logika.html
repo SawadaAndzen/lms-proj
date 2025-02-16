@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+  <head>
+    <script type="module" crossorigin src="/singlepage/root/assets/js/polyfills.DoDTa2WXkoyxBML.js"></script>
+
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
+    <meta name="google" content="notranslate" />
+    <title></title>
+    <meta name="csrf-param" content="_csrf-frontend">
+<meta name="csrf-token" content="J1P_CWM-hhdeQIbTRJPGvpTdaK9n27VjA-z__zxvdGFQF4ZYBlC2XQ11xaUn-onN_owf2yuS3lNI2aalUCk6Uw==">
+
+<script>window.timeLoadStart = new Date().getTime();
+window.isSpaNoReload = true;
+window.isSpaPreload = true;</script>    
+    <script>
+      var path = window.location.pathname;
+
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+
+      gtag('js', new Date());
+      window.addEventListener(
+        'submit',
+        function () {
+          dataLayer.push({ event: 'form_submit' });
+        },
+        true,
+      );
+      /* End Google Tag Manager */
+    </script>
+     
+<script
+    src="/singlepage/root/sentry/7.108.0/bundle.tracing.min.js"
+></script>
+<script>
+function initSentry(){
+  const eventLimiter = {};
+  const THROTTLING_TIMEOUT_SECONDS = 30 * 1000;
+
+  function throttleEvent (event, hint) {
+    const exception = hint && hint.originalException;
+
+    if (exception === null || exception === undefined) {
+      return event;
+    }
+
+    const message =
+      typeof exception === 'string' ? exception : exception.message;
+
+    if (message in eventLimiter) {
+      return null;
+    }
+
+    eventLimiter[message] = true;
+
+    setTimeout(
+      function(){
+        delete eventLimiter[message];
+      },
+      THROTTLING_TIMEOUT_SECONDS,
+    );
+
+    return event;
+  }
+
+  Sentry.init({
+    integrations: [Sentry.browserTracingIntegration()],
+    tracesSampleRate: 0.1,
+    beforeSend: function(event, hint) {
+      if (!event.extra) event.extra = {};
+      return throttleEvent(event, hint);
+    },
+    denyUrls: [
+      // Facebook flakiness
+      /graph\.facebook\.com/i,
+      // Facebook blocked
+      /connect\.facebook\.net\/en_US\/all\.js/i,
+      // Woopra flakiness
+      /eatdifferent\.com\.woopra-ns\.com/i,
+      /static\.woopra\.com\/js\/woopra\.js/i,
+      // Chrome extensions
+      /extensions\//i,
+      /^chrome:\/\//i,
+      // Other plugins
+      /127\.0\.0\.1:4001\/isrunning/i, // Cacaoweb
+      /webappstoolbarba\.texthelp\.com\//i,
+      /metrics\.itunes\.apple\.com\.edgesuite\.net\//i,
+    ],
+    ignoreErrors: [
+      // Random plugins/extensions
+      'top.GLOBALS',
+      // See: http://blog.errorception.com/2012/03/tale-of-unfindable-js-error.html
+      'originalCreateNotification',
+      'canvas.contentDocument',
+      'MyApp_RemoveAllHighlights',
+      'http://tt.epicplay.com',
+      "Can't find variable: ZiteReader",
+      'jigsaw is not defined',
+      'ComboSearch is not defined',
+      'http://loading.retry.widdit.com/',
+      'atomicFindClose',
+      // Facebook borked
+      'fb_xd_fragment',
+      // ISP "optimizing" proxy - `Cache-Control: no-transform` seems to
+      // reduce this. (thanks @acdha)
+      // See http://stackoverflow.com/questions/4113268
+      'bmi_SafeAddOnload',
+      'EBCallBackMessageReceived',
+      // See http://toolbar.conduit.com/Developer/HtmlAndGadget/Methods/JSInjection.aspx
+      'conduitPage',
+      // Videoplatform
+      'Bridge Channel send: no opened channel',
+      'Constraint could not be satisfied:',
+      'Could not start audio source',
+      'Could not start video source',
+      'Failed to fetch',
+      'Feature discovery error',
+      'Focus error, retry after',
+      'No opened channel',
+      'no peer media info available for',
+      'Not connected',
+      'NotSupportedError:',
+      'Ping timeout',
+      'Requested device(s) was/were not found:',
+      'Strophe:',
+      'The timeout for the confirmation about leaving the room expired',
+      'User canceled screen sharing prompt',
+      'User denied permission to use device(s):',
+      'Websocket error',
+      'You are already in the room!',
+      // scratch
+      /^Error in Scratch GUI:/,
+      "Cannot read property 'currentCostume' of undefined",
+      "Cannot set property 'value' of null",
+      'Tried to glow stack on block that does not exist.',
+      'DataCloneError: The object could not be cloned.',
+      "Failed to execute 'getImageData' on 'CanvasRenderingContext2D'",
+      "Cannot read property 'workspace' of null",
+      "Cannot read property 'getCostumes' of undefined",
+      "Cannot read property 'dragBlock' of null",
+      "Failed to execute 'shaderSource' on 'WebGLRenderingContext': parameter 1 is not of type 'WebGLShader'.",
+      "Cannot read property 'blockDragSurface_' of null",
+      'this.finalPath.add is not a function',
+    ],
+
+    // here will be pasted actual "dsn" from Jenkins Credentials —
+    // it must replace template string "CORRECT_DSN_FOR_GEO_INSTANCE"
+    // with correct DSN for certain instance, i.e. for GEO-RU instance:
+    // "CORRECT_DSN_FOR_GEO_INSTANCE" >> "https://8fc299642da8bf575c646243c166e768@sentry.algoritmika.su/8"
+    // @see https://algoritmika.atlassian.net/browse/PLATFORM-6877
+    dsn: 'https://8f41ef8e4198b0f21250a2887ed4c145@sentry.alg.team/9',
+
+    maxBreadcrumbs: 15,
+    release: 'algoritmika-singlepage@2024.12.26-181625',
+    sampleRate: 0.5,
+  });
+}
+initSentry();
+</script>
+
+
+    <script type="module" crossorigin src="/singlepage/root/assets/js/index.CxvV-IuP7jwyLFc.js"></script>
+    <link rel="modulepreload" crossorigin href="/singlepage/root/assets/js/DqMhhfTAyGQ8Qe4.js">
+    <link rel="stylesheet" crossorigin href="/singlepage/root/assets/index-CuDAD2jy.css">
+  </head>
+
+  <body class="notranslate">
+        <noscript> You need to enable JavaScript to run this app. </noscript>
+
+    <div id="root"></div>
+
+      </body>
+</html>
