@@ -1,45 +1,42 @@
 {% load static %}
 
 
-<div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true">
+<div class="modal fade" id="rolesModal" tabindex="-1" aria-labelledby="rolesModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="classModalLabel">Classes Manager</h5>
+        <h5 class="modal-title" id="rolesModalLabel">Roles</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <button class="btn btn-outline-primary mb-2 rounded-pill" data-bs-toggle="modal" data-bs-target="#createClassModal">
-          <small>Add new class</small>
+        <button class="btn btn-outline-primary mb-2 rounded-pill" data-bs-toggle="modal" data-bs-target="#createRoleModal">
+          <small>Add new role</small>
         </button>
         
-        <div id="classList">
-          {% for class in classes %}
-          <div class="border p-2 mb-2 class-item" data-id="{{ class.id }}">
+        <div id="rolesList">
+          {% for user in users %}
+          <div class="border p-2 mb-2 class-item" data-id="{{ user.id }}">
             <p>
-              <strong>@{{ class.name }}</strong> <small>{{ class.course.name }}</small>
-              (@{{ class.teacher.username }}, {{ class.students.count }} students)
+              <strong>@{{ user.username }}</strong> <small>{{ user.first_name }} {{ user.last_name }}</small>
+              ({{ user.role.first.get_role_display }})
             </p>
             <button class="btn btn-outline-success rounded-pill update-btn" 
-              data-id="{{ class.id }}" 
-              data-name="{{ class.name }}" 
-              data-desc="{{ class.desc }}" 
-              data-course="{{ class.course.id }}" 
-              data-teacher="{{ class.teacher.id }}"
-              data-students='[ {% for student in class.students.all %} "{{ student.id }}" {% if not forloop.last %}, {% endif %} {% endfor %} ]'
-              data-bs-toggle="modal" data-bs-target="#updateClassModal">
+              data-id="{{ user.id }}" 
+              data-username="{{ user.username }}" 
+              data-role="{{ user.role.first }}" 
+              data-bs-toggle="modal" data-bs-target="#updateRoleModal">
               <small>Change</small>
             </button>       
 
             <button class="btn btn-outline-danger rounded-pill delete-btn" 
-                data-id="{{ class.id }}" 
-                data-name="{{ class.name }}" 
-                data-bs-toggle="modal" data-bs-target="#deleteClassModal">
+                data-id="{{ user.role.first.id }}" 
+                data-role="{{ user.role.first.get_role_display }}" 
+                data-bs-toggle="modal" data-bs-target="#deleteRoleModal">
                 <small>Delete</small>
             </button>
           </div>
           {% empty %}
-          <p class="text-muted">No classes yet.</p>
+          <p class="text-muted">No roles yet.</p>
           {% endfor %}
         </div>
       </div>
@@ -48,36 +45,28 @@
 </div>
 
 
-<div class="modal fade" id="createClassModal" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
+<div class="modal fade" id="createRoleModal" tabindex="-1" aria-labelledby="createRoleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title">Create New Class</h5>
+              <h5 class="modal-title">Create New Role</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
-              <form id="create-class-form" action="{% url 'create-group' %}" method="post">
+              <form id="create-role-form" action="" method="post">
                   {% csrf_token %}
-                  <input type="text" name="name" class="form-control mb-2" placeholder="Class Name" required>
-                  <textarea name="desc" class="form-control mb-2" placeholder="Description"></textarea>
-                  Course:
-                  <select name="course" class="form-control mb-2">
-                      {% for course in courses %}
-                      <option value="{{ course.id }}">{{ course.name }}</option>
+                  User:
+                  <select name="user" class="form-control mb-2">
+                      {% for one_user in all_users %}
+                      <option value="{{ one_user.id }}">{{ one_user.username }}</option>
                       {% endfor %}
                   </select>
-                  Teacher:
-                  <select name="teacher" class="form-control mb-2">
-                      {% for teacher in teachers %}
-                      <option value="{{ teacher.id }}">{{ teacher.username }}</option>
-                      {% endfor %}
-                  </select>
-                  Students:
-                  <select name="students" class="form-control mb-2" multiple>
-                    {% for student in students %}
-                    <option value="{{ student.id }}">{{ student.username }}</option>
-                    {% endfor %}
-                  </select>     
+                  Role:
+                  <select name="role" class="form-control mb-2">
+                      <option value="admin">Admin</option>
+                      <option value="teacher">Teacher</option>
+                      <option value="student">Student</option>
+                  </select>  
                   <button type="submit" class="btn btn-primary w-100">Create</button>
               </form>
           </div>
@@ -143,4 +132,4 @@
   </div>
 </div>
 
-<script src="{% static 'js/admin/class_manager.js' %}"></script>
+<script src="{% static 'js/admin/roles.js' %}"></script>
