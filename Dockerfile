@@ -19,4 +19,6 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-ENTRYPOINT [ "gunicorn", "project.wsgi", "-b", "0.0.0.0:8000"]
+COPY init_user.py /app/
+
+CMD sh -c "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py shell < /app/init_user.py && gunicorn project.wsgi -b 0.0.0.0:8000"
