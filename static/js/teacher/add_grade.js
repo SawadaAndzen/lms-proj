@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
         let csrfToken = document.querySelector("input[name=csrfmiddlewaretoken]").value;
 
-        fetch(addGradeUrl, {
+        fetch("/add-grade/", {
             method: "POST",
             body: formData,
             headers: { "X-CSRFToken": csrfToken }

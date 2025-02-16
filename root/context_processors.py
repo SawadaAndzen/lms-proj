@@ -3,12 +3,14 @@ from django.db.models.functions import Coalesce
 from django.contrib.auth.models import User
 from tasks.models import TaskAnswer, Grade
 from classes.models import Class
-from courses.models import CourseInstance
+from courses.models import CourseInstance, JoinRequest, Course
 from tasks.models import InstanceTask
 
 
 def answers_with_grades(request):
     if request.user.is_authenticated and request.user.role.filter(role="teacher").exists():
+        print(f"LOG: @{request.user.username} is a teacher!")
+        
         teacher_classes = Class.objects.filter(teacher=request.user)
         students = User.objects.filter(students__in=teacher_classes)
         course_instances = CourseInstance.objects.filter(course__in=teacher_classes.values_list('course', flat=True))
@@ -34,4 +36,17 @@ def answers_with_grades(request):
 
         return {"global_answers": answers}
     
-    return {"global_answers": []}
+    elif request.user.is_authenticated and request.user.role.filter(role="admin").exists():
+        print(f"LOG: @{request.user.username} is an admin!")
+        
+        join_requests = JoinRequest.objects.all().distinct()
+        classes = Class.objects.all().distinct()
+        teachers = User.objects.filter(role__role='teacher')
+        students = User.objects.filter(role__role='student')
+        courses = Course.objects.all()
+        
+        return {"join_requests": join_requests, "classes": classes, 
+                "teachers": teachers, "students": students, "courses": courses}
+    
+    return {"global_answers": [], "join_requests": [], "classes": [],
+            "teachers": [], "students": [], "courses": []}

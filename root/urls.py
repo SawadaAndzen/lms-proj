@@ -1,6 +1,8 @@
 from django.urls import path
 from django.contrib.auth.views import LogoutView
-from .views import Forum, ToggleTaskStatusView, AddGradeView, Index, SignUpView, CustomLoginView, CustomPasswordView, UserUpdate, ProfileDetailView, UpdateProfileView, ProfileAPI
+from .views import Forum, ToggleTaskStatusView, AddGradeView, Index
+from .views import SignUpView, CustomLoginView, CustomPasswordView, UserUpdate
+from .views import ProfileDetailView, UpdateProfileView, ProfileAPI, AcceptJoinRequestView, DeclineJoinRequestView
 
 
 urlpatterns = [
@@ -15,5 +17,7 @@ urlpatterns = [
     path('profile/<str:username>/update/', UpdateProfileView.as_view(), name = 'update-profile'),
     path('users/update/<str:username>/data/', UserUpdate.as_view(), name = 'user-update'),
     path("users/update/<str:username>/data/password/", CustomPasswordView.as_view(), name = "change-password"),
+    path('join-request/accept/<int:pk>/', AcceptJoinRequestView.as_view(), name='accept_join_request'),
+    path('join-request/decline/<int:pk>/', DeclineJoinRequestView.as_view(), name='decline_join_request'),
     path("api/profile/all/", ProfileAPI.as_view(), name = "profile-api"),
 ]

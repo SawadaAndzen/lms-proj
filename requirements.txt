@@ -5,12 +5,14 @@ Django==4.2.17
 djangorestframework==3.15.2
 docutils==0.21.2
 filetype==1.2.0
+gunicorn==23.0.0
 idna==3.10
 Kivy==2.3.1
 kivy-deps.angle==0.4.0
 kivy-deps.glew==0.3.1
 kivy-deps.sdl2==0.8.0
 Kivy-Garden==0.1.5
+packaging==24.2
 pillow==11.1.0
 pygments==2.19.1
 pypiwin32==223
@@ -20,3 +22,4 @@ sqlparse==0.5.3
 typing-extensions==4.12.2
 tzdata==2024.2
 urllib3==2.3.0
+whitenoise==6.9.0

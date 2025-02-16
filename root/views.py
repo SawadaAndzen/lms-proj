@@ -1,4 +1,5 @@
 from django.urls import reverse, reverse_lazy
+from django.db import transaction
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect
 from django.http import JsonResponse
@@ -6,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, TemplateView, View
 from rest_framework import generics
+from courses.models import CourseInstance, JoinRequest
 from tasks.models import TaskAnswer, Grade, InstanceTask
 from .forms import MessageForm, CustomSignUpForm, CustomLoginForm, ProfileForm, CustomChangePasswordForm, CustomUserChangeForm
 from .models import Profile, Message
@@ -178,6 +180,30 @@ class ToggleTaskStatusView(View):
 
         except json.JSONDecodeError:
             return JsonResponse({'success': False, 'message': 'Invalid JSON'}, status=400)
+
+
+class AcceptJoinRequestView(View):
+    def post(self, request, pk, *args, **kwargs):
+        join_request = get_object_or_404(JoinRequest, pk=pk)
+        
+        CourseInstance.objects.create(user=join_request.user, course=join_request.course)
+        
+        join_request.delete()
+        
+        return JsonResponse({"success": True})
+
+
+class DeclineJoinRequestView(View):
+    def post(self, request, pk, *args, **kwargs):
+        join_request = get_object_or_404(JoinRequest, pk=pk)
+        student_profile = get_object_or_404(Profile, user=join_request.user)
+        
+        with transaction.atomic():
+            student_profile.cash += join_request.course.price
+            student_profile.save()
+            join_request.delete()
+        
+        return JsonResponse({"success": True})
 
     
 class ProfileAPI(generics.ListCreateAPIView):
