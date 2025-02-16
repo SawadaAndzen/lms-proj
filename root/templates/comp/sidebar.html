@@ -1,9 +1,9 @@
 {% load static %}
 
 
-<div class="d-flex flex-column flex-shrink-0 p-2 bg-dark text-white" style="width: 260px; height: 100vh; position: fixed;">
+<div class="d-flex flex-column flex-shrink-0 p-0 bg-dark text-white" style="width: 260px; height: 100vh; position: fixed;">
   <hr>
-  <ul class="nav nav-pills flex-column mb-auto">
+  <ul class="nav fs-6 nav-pills flex-column">
       <li class="nav-item"><a href="/" class="nav-link text-white"><i class="bi bi-house"></i> Home</a></li>
       <li class="nav-item"><a href="/forum/" class="nav-link text-white"><i class="bi bi-chat"></i> Forum</a></li>
       <li><a href="/courses/" class="nav-link text-white"><i class="bi bi-book"></i> Courses</a></li>
@@ -15,13 +15,25 @@
       <hr>
       {% if user.is_authenticated %}
         <li><a class="nav-link text-white" href="{% url 'profile' username=user.username %}"><i class="bi bi-person-circle"></i> Profile</a></li>
-        {% if user.is_staff %}
-          <li><a class="nav-link text-white" href="/admin/"><i class="bi bi-journal-code"></i> Administration</a></li>
-        {% endif %}
         {% if user.teacher.exists %}
           <li>
             <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#answersModal">
               <i class="bi bi-check-circle"></i> Review Answers
+            </a>
+          </li>
+        {% endif %}
+
+        {% if user.is_staff %}
+        <li><a class="nav-link text-white" href="/admin/"><i class="bi bi-journal-code"></i> Administration</a></li>
+        {% endif %}
+
+        {% if user.is_superuser %}
+          <li>
+            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#requestsModal">
+              <i class="bi bi-cart-check"></i> Join Requests
+            </a>
+            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#classModal">
+              <i class="bi bi-person-add"></i> Classes Manager
             </a>
           </li>
         {% endif %}

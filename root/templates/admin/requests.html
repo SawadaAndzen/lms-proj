@@ -1,0 +1,34 @@
+{% load static %}
+
+
+<div class="modal fade" id="requestsModal" tabindex="-1" aria-labelledby="requestsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="requestsModalLabel">Join Requests</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% for jr in join_requests %}
+        <div class="border p-2 mb-2">
+            <p>
+                <strong>@{{ jr.user.username }}</strong> wants to join {{ jr.course.name }} 
+                ({% if jr.course.price > 0 %}${{ jr.course.price }}{% else %}FREE{% endif %})
+    
+                <button class="btn btn-outline-success rounded-pill accept-btn" data-id="{{ jr.id }}">
+                    <small>Accept</small>
+                </button>
+                <button class="btn btn-outline-warning rounded-pill decline-btn" data-id="{{ jr.id }}">
+                    <small>Decline</small>
+                </button>
+              </p>
+            </div>
+        {% empty %}
+        <p class="text-muted">No requests yet.</p>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src = "{% static "js/admin/requests_control.js" %}"></script>

@@ -46,4 +46,19 @@ class TaskView(DetailView):
             "is_teacher": is_teacher,
             "global_answers": self.get_global_answers(),
         })
+        
         return context
+    
+    def post(self, request, *args, **kwargs):
+        task = self.get_object()
+        course = self.get_course()
+        answer_form = AnswerForm(request.POST, request.FILES)
+        url = "task-detail" if course else "course-list"
+        
+        if answer_form.is_valid():
+            answer = answer_form.save(commit = False)
+            answer.user = request.user
+            answer.task = task
+            answer.save()
+            
+        return redirect(url, pk = course.pk, task_pk = task.pk) if course else redirect("course-list")

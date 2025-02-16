@@ -68,23 +68,12 @@ class CreateRequest(View):
 
             JoinRequest.objects.create(user=request.user, course=course)
             
-            course_instance = CourseInstance.objects.create(user=request.user, course=course)
-
-            for module in course.modules.all():
-                for lesson in module.lessons.all():
-                    for task in lesson.tasks.all():
-                        InstanceTask.objects.create(
-                            user=request.user, 
-                            course_instance=course_instance,
-                            task=task
-                        )
-
             messages.success(request, "Join request was sent successfully!")
         else:
             messages.error(request, "Insufficient balance to join this course.")
         
         return HttpResponseRedirect(reverse('course-list'))
-    
+
     
 class FilteredCourses(View):
     def get(self, request, min_price, max_price, *args, **kwargs):
