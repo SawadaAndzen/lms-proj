@@ -29,6 +29,9 @@
 
         {% if user.is_superuser %}
           <li>
+            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#rolesModal">
+              <i class="bi bi-passport"></i> Roles
+            </a>
             <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#requestsModal">
               <i class="bi bi-cart-check"></i> Join Requests
             </a>

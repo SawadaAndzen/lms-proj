@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelector("#create-class-form").addEventListener("submit", function (event) {
         event.preventDefault();
-    
         let actionUrl = this.getAttribute("action");
-    
+
         fetch(actionUrl, {
             method: "POST",
             headers: {
@@ -15,8 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                let modal = document.querySelector("#createClassModal");
-                modal.querySelector(".btn-close").click();
                 location.reload();
             } else {
                 alert("Error creating class");
@@ -26,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Error:", error);
             alert("Something went wrong. Check the console for details.");
         });
-    });    
+    });
 
     document.querySelectorAll(".update-btn").forEach(button => {
         button.addEventListener("click", function () {
@@ -37,13 +34,13 @@ document.addEventListener("DOMContentLoaded", function () {
             modal.querySelector("[name=course]").value = this.dataset.course;
             modal.querySelector("[name=teacher]").value = this.dataset.teacher;
     
-            let studentSelect = modal.querySelector("[name='students[]']");
+            let studentSelect = modal.querySelector("[name='students']");
             
             [...studentSelect.options].forEach(option => {
                 option.selected = false;
             });
     
-            let selectedStudents = JSON.parse(this.dataset.students || "[]");
+            let selectedStudents = JSON.parse(this.dataset.students);
             selectedStudents.forEach(studentId => {
                 let option = studentSelect.querySelector(`option[value="${studentId}"]`);
                 if (option) {
