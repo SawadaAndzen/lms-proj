@@ -3,11 +3,12 @@ from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DetailView
 from courses.models import Course
+from root.mixins import SecureMixin
 from .models import Task, TaskAnswer, Grade
 from .forms import AnswerForm
 
 
-class TaskView(DetailView):
+class TaskView(SecureMixin, DetailView):
     model = Task
     template_name = 'tasks/task.html'
     context_object_name = "task"

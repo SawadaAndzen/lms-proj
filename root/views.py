@@ -7,11 +7,16 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, TemplateView, View
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from decimal import Decimal
 from courses.models import CourseInstance, JoinRequest
 from tasks.models import TaskAnswer, Grade, InstanceTask
-from .forms import MessageForm, CustomSignUpForm, CustomLoginForm, ProfileForm, CustomChangePasswordForm, CustomUserChangeForm
-from .models import Profile, Message
+from .forms import MessageForm, CustomSignUpForm, CustomLoginForm
+from .forms import ProfileForm, CustomChangePasswordForm, CustomUserChangeForm, RoleForm
+from .models import Profile, Message, Role
 from .serializers import ProfileSerializer
+from .mixins import SecureMixin
 
 import json
 
@@ -43,7 +48,7 @@ class CustomLoginView(LoginView):
         return reverse_lazy('profile', kwargs={'username': self.request.user.username})
     
     
-class ProfileDetailView(DetailView):
+class ProfileDetailView(SecureMixin, DetailView):
     model = Profile
     template_name = 'root/profile/profile.html'
     context_object_name = 'profile'
@@ -58,7 +63,7 @@ class ProfileDetailView(DetailView):
         return profile
 
 
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(SecureMixin, UpdateView):
     model = Profile
     form_class = ProfileForm
     template_name = 'root/profile/update_profile.html'
@@ -88,7 +93,7 @@ class UpdateProfileView(UpdateView):
         return super().form_valid(form)
     
     
-class UserUpdate(UpdateView):
+class UserUpdate(SecureMixin, UpdateView):
     model = User
     form_class = CustomUserChangeForm
     template_name = 'root/user/change_user.html'
@@ -102,7 +107,7 @@ class UserUpdate(UpdateView):
         return User.objects.get(username = username)
     
     
-class CustomPasswordView(PasswordChangeView):
+class CustomPasswordView(SecureMixin, PasswordChangeView):
     template_name = 'root/user/change_password.html'
     form_class = CustomChangePasswordForm
     
@@ -110,7 +115,7 @@ class CustomPasswordView(PasswordChangeView):
         return reverse_lazy('profile', kwargs={'username': self.request.user.username})
     
     
-class Forum(ListView):
+class Forum(SecureMixin, ListView):
     model = Message
     template_name = "root/forum.html"
     context_object_name = 'messages'
@@ -135,7 +140,7 @@ class Forum(ListView):
         return redirect('forum')
     
     
-class AddGradeView(View):
+class AddGradeView(SecureMixin, View):
     def post(self, request, *args, **kwargs):
         answer_id = request.POST.get("answer_id")
         grade_value = request.POST.get("grade")
@@ -154,7 +159,7 @@ class AddGradeView(View):
         })
 
 
-class ToggleTaskStatusView(View):
+class ToggleTaskStatusView(SecureMixin, View):
     def post(self, request, *args, **kwargs):
         if not request.user.role.filter(role="teacher").exists():
             return JsonResponse({'success': False, 'message': 'Permission denied'}, status=403)
@@ -182,7 +187,7 @@ class ToggleTaskStatusView(View):
             return JsonResponse({'success': False, 'message': 'Invalid JSON'}, status=400)
 
 
-class AcceptJoinRequestView(View):
+class AcceptJoinRequestView(SecureMixin, View):
     def post(self, request, pk, *args, **kwargs):
         join_request = get_object_or_404(JoinRequest, pk=pk)
         
@@ -193,7 +198,7 @@ class AcceptJoinRequestView(View):
         return JsonResponse({"success": True})
 
 
-class DeclineJoinRequestView(View):
+class DeclineJoinRequestView(SecureMixin, View):
     def post(self, request, pk, *args, **kwargs):
         join_request = get_object_or_404(JoinRequest, pk=pk)
         student_profile = get_object_or_404(Profile, user=join_request.user)
@@ -204,8 +209,59 @@ class DeclineJoinRequestView(View):
             join_request.delete()
         
         return JsonResponse({"success": True})
+    
+    
+class CreateRole(SecureMixin, View):
+    def post(self, request, *args, **kwargs):
+        form = RoleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            
+            return JsonResponse({"success": True})
+        
+        return JsonResponse({"success": False, "errors": form.errors}, status=400)
 
+
+class UpdateRole(SecureMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        role = get_object_or_404(Role, id=pk)
+        form = RoleForm(request.POST, instance=role)
+        if form.is_valid():
+            form.save()
+            
+            return JsonResponse({"success": True})
+        
+        return JsonResponse({"success": False, "errors": form.errors}, status=400)
+
+
+class DeleteRole(SecureMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        role = get_object_or_404(Role, id=pk)
+        role.delete()
+        
+        return JsonResponse({"success": True})
+    
+    
+class AddCashView(SecureMixin, View):
+    def post(self, request, *args, **kwargs):
+        try:
+            profile = get_object_or_404(Profile, user=request.user)
+            amount = Decimal(request.POST.get("amount", 0))
+
+            if amount <= 0:
+                return JsonResponse({"success": False, "message": "Invalid amount!"}, status=400)
+
+            profile.cash += amount
+            profile.save()
+
+            return JsonResponse({"success": True, "message": "Cash added successfully!", "new_balance": profile.cash})
+
+        except ValueError:
+            return JsonResponse({"success": False, "message": "Invalid input!"}, status=400)
+    
     
 class ProfileAPI(generics.ListCreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]

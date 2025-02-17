@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView, TemplateView
 from django.views import View
 from django.views.generic.edit import CreateView
 from root.models import Profile
+from root.mixins import SecureMixin
 from tasks.models import InstanceTask
 from .models import Course, CourseInstance, JoinRequest
 
@@ -23,7 +24,7 @@ class CourseDetailView(DetailView):
     context_object_name = 'course'
     
 
-class CourseView(DetailView):
+class CourseView(SecureMixin, DetailView):
     model = Course
     template_name = "courses/course.html"
     context_object_name = "course"
@@ -56,7 +57,7 @@ class CourseView(DetailView):
         return context
 
 
-class CreateRequest(View):
+class CreateRequest(SecureMixin, View):
     def post(self, request, *args, **kwargs):
         course_id = self.kwargs.get('pk')
         course = get_object_or_404(Course, id=course_id)

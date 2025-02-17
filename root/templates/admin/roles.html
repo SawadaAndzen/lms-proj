@@ -21,8 +21,8 @@
               ({{ user.role.first.get_role_display }})
             </p>
             <button class="btn btn-outline-success rounded-pill update-btn" 
-              data-id="{{ user.id }}" 
-              data-username="{{ user.username }}" 
+              data-id="{{ user.role.first.id }}" 
+              data-user-id="{{ user.id }}"
               data-role="{{ user.role.first }}" 
               data-bs-toggle="modal" data-bs-target="#updateRoleModal">
               <small>Change</small>
@@ -75,37 +75,29 @@
 </div>
 
 
-<div class="modal fade" id="updateClassModal" tabindex="-1" aria-labelledby="updateClassModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateRoleModal" tabindex="-1" aria-labelledby="updateRoleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title">Update Class</h5>
+              <h5 class="modal-title">Update Role</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
-            <form id="update-class-form" action="" method="post">
+            <form id="update-role-form" action="" method="post">
                   {% csrf_token %}
                   <input type="hidden" name="id">
-                  <input type="text" name="name" class="form-control mb-2" required>
-                  <textarea name="desc" class="form-control mb-2"></textarea>
-                  Course:
-                  <select name="course" class="form-control mb-2">
-                      {% for course in courses %}
-                      <option value="{{ course.id }}">{{ course.name }}</option>
+                  User:
+                  <select name="user" class="form-control mb-2" id="user-select">
+                      {% for one_user in all_users %}
+                      <option value="{{ one_user.id }}">{{ one_user.username }}</option>
                       {% endfor %}
                   </select>
-                  Teacher:
-                  <select name="teacher" class="form-control mb-2">
-                      {% for teacher in teachers %}
-                      <option value="{{ teacher.id }}">{{ teacher.username }}</option>
-                      {% endfor %}
-                  </select>
-                  Students:
-                  <select name="students" class="form-control mb-2" multiple>
-                    {% for student in students %}
-                    <option value="{{ student.id }}">{{ student.username }}</option>
-                    {% endfor %}
-                  </select>                
+                  Role:
+                  <select name="role" class="form-control mb-2">
+                      <option value="admin">Admin</option>
+                      <option value="teacher">Teacher</option>
+                      <option value="student">Student</option>
+                  </select>                 
                   <button type="submit" class="btn btn-success w-100">Update</button>
               </form>
           </div>
@@ -114,16 +106,16 @@
 </div>
 
 
-<div class="modal fade" id="deleteClassModal" tabindex="-1" aria-labelledby="deleteClassModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteRoleModal" tabindex="-1" aria-labelledby="deleteRoleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title">Delete Class</h5>
+              <h5 class="modal-title">Delete Role</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
-              <p>Are you sure you want to delete "<strong id="delete-class-name"></strong>"?</p>
-              <form id="delete-class-form" method="POST" action="">
+              <p>Are you sure you want to delete this role?</p>
+              <form id="delete-role-form" method="POST" action="">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Delete</button>
               </form>            

@@ -33,12 +33,14 @@
             </div>
         </div>    
         
+        {% include "root/profile/add_cash.html" %}
         {% include "teacher/answers_list.html" %}
         {% include "teacher/add_grade.html" %}
         {% include "admin/requests.html" %}
         {% include "admin/class_manager.html" %}
         {% include "admin/roles.html" %}
         <script src="{% static 'js/teacher/add_grade.js' %}"></script>
+        <script src="{% static 'js/profile/cash_system.js' %}"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
