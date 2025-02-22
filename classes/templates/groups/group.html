@@ -11,11 +11,11 @@
         <div class = "col">
             <div class="col-md-auto col-lg-auto ms-auto me-auto">
                 <div class="card mb-4 overflow-hidden" style="max-height: 400px;">
-                    <div class="card-body text-left">
+                    <div class="card-body bg-dark text-left">
                         <h3>
                             <h1 class="display-1 fs-1">{{ group.name }}</h1>
                             <h2 class="display-1 fs-6 text-muted">{{ group.desc }}</h2>
-                            <p>
+                            <p class="text-white">
                                 Course: {{ group.course.name }} ({{ group.course.modules.count }} module(s), {{ group.course.modules|total_lessons }} lesson(s))
                             </p>
                             <a class="btn btn-gradient rounded-pill" href = "{% url 'course' pk=group.course.pk %}">
@@ -33,10 +33,10 @@
         <div class = "col">
             <div class="col-md-auto col-lg-auto ms-auto me-auto">
                 <div class="card mb-4 overflow-hidden" style="max-height: 400px;">
-                    <div class="card-body">
+                    <div class="card-body bg-dark">
                         <h3>
                             <h1 class="display-1 fs-1">Members</h1>
-                            <p class="display-1 fs-5">
+                            <p class="display-1 text-white fs-5">
                                 <small class="text-muted">Group Teacher</small> 
                                 {{ group.teacher.first_name}} {{ group.teacher.last_name}} 
                                 <small>@{{group.teacher.username}}</small>
@@ -44,7 +44,7 @@
                             </p>
 
                             {% for student in group.students.all %}
-                                <p class="display-1 fs-5">
+                                <p class="text-white display-1 fs-5">
                                     <small class="text-muted">Student</small> 
                                     {{ student.first_name}} {{ student.last_name}} 
                                     <small>@{{student.username}}</small>

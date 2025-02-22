@@ -40,7 +40,7 @@
                 {% if request.user == profile.user %}
                     <a href="{% url 'update-profile' username=user.username %}" class="fs-6"><i class="bi bi-pencil"></i></a>
                     <small class = "fs-1">|</small>
-                    <text class = "text-secondary ms-2 fs-5"> 
+                    <text class = "text-muted ms-2 fs-5"> 
                         <i class="bi bi-wallet2"></i> Wallet: {{ user.profile.first.cash }}$
                     </text>
                     <a href="#" class="fw-bold fs-5" data-bs-toggle="modal" data-bs-target="#cashModal"><i class="bi bi-plus"></i></a>
@@ -51,25 +51,25 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="rounded-4 card-body d-flex justify-content-center border border-success">
-        <a data-bs-toggle="collapse" href="#about" role="button" aria-expanded="false" aria-controls="about" class="btn btn-link text-secondary">
+<div class="card bg-dark rounded-2">
+    <div class="rounded-4 card-body bg-dark d-flex justify-content-center rounded-2">
+        <a data-bs-toggle="collapse" href="#about" role="button" aria-expanded="false" aria-controls="about" class="btn btn-link text-muted">
             About
         </a>
         {% if request.user == profile.user %}
-            <a href="{% url "user-update" username=user.username %}" aria-expanded="false" aria-controls="projects" class="btn btn-link text-secondary">
+            <a href="{% url "user-update" username=user.username %}" aria-expanded="false" aria-controls="projects" class="btn btn-link text-muted">
                 Settigns
             </a>
         {% endif %}
     </div>
 
     <div class="collapse" id="about">
-        <div class="card card-body text-center">
+        <div class="card card-body bg-dark border text-center">
             <h3>About</h3>
             {% if profile.desc %}
                 {{ profile.desc }}
             {% else %}
-                No description yet.
+               <text class="text-muted display-3 fs-6">No description yet.</text>
             {% endif %}
         </div>
     </div>

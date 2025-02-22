@@ -15,7 +15,7 @@ class CoursesListView(ListView):
     model = Course
     template_name = 'courses/list.html'
     context_object_name = 'courses'
-    #paginate_by = 9
+    paginate_by = 4
     
     
 class CourseDetailView(DetailView):

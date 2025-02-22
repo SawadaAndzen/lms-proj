@@ -26,6 +26,16 @@
         z-index: -1; /* Places it behind the text content */
         opacity: 0.15; /* Adjust the dimming further if needed */
     }    
+    .pagination .page-item .page-link {
+        background-color: #212529; /* Dark background */
+        color: #fff; /* White text */
+        border: 1px solid #444; /* Subtle border */
+    }
+
+    .pagination .page-item .page-link:hover {
+        background-color: #343a40; /* Slightly lighter dark */
+        color: #fff;
+    }
 </style>
 
 
@@ -44,15 +54,38 @@
         <text class="display-3 fs-4">Filter</text>
     <form method="GET" class="filter-form">
         <label for="min_price" class="fs-6">Min Price:</label>
-        <input class="form-control" type="number" id="min_price" name="min_price" min="0" max="9999" value="0">
+        <input class="form-control text-white" type="number" id="min_price" name="min_price" min="0" max="9999" value="0">
 
         <label for="max_price" class="fs-6">Max Price:</label>
-        <input class="form-control" type="number" id="max_price" name="max_price" min="0" max="9999" value="9999">
+        <input class="form-control text-white" type="number" id="max_price" name="max_price" min="0" max="9999" value="9999">
         
         <button class="btn btn-gradient mt-3 mb-3" id="FilterButton"> 
             <i class="bi bi-arrow-repeat"></i> Filter
         </button>
     </form>
+    <hr class="bg-white">
+    <div class="container text-end mt-2">
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <nav aria-label="paginator">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                        {% endif %}
+                        {% for i in page_obj.paginator.page_range %}
+                            <li class="page-item">
+                                <a class="page-link {% if i == page_obj.number %}active{% endif %}" href="?page={{ i }}">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>     
+    <p class="text-white display-1" style="font-size: 12px;">Caution: pagination only shows all courses, not filtered.</p>
 </div>
 
         <div class="ms-3 me-3 mt-3 list-container container-sm border rounded-3">
@@ -60,7 +93,7 @@
             <div class="row" id="CoursesRow">
                 {% for course in courses %}
                     <div class="col-md-auto col-lg-auto ms-auto me-auto">
-                        <div class="card mb-4 overflow-hidden position-relative" style="max-height: 400px;">
+                        <div class="card mb-4 bg-dark overflow-hidden position-relative" style="max-height: 400px;">
                             <div class="card-body">
                                 <h3>
                                     <div class="bg-image rounded-4"></div>

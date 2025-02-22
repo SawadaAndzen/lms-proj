@@ -19,7 +19,7 @@
   --warning: #FF5733;
   --danger: #7B001B;
   --light: #f8f9fa;
-  --dark: #343a40;
+  --dark: #1a1d20;
   --breakpoint-xs: 0;
   --breakpoint-sm: 576px;
   --breakpoint-md: 768px;
@@ -61,6 +61,10 @@
 .btn-gradient:hover::before {
   background: linear-gradient(to bottom right, #a01bff, #ff0019);
   filter: blur(30px);
+}
+
+input, textarea, select {
+  color: white !important;
 }
 
 html {

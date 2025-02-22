@@ -42,11 +42,11 @@
     </div>
 
     <div class="position-relative justify-content-center overflow-hidden p-2 p-md-5 m-md-1 text-white">
-        <div class="col p-3 rounded-4">
+        <div class="col p-3 bg-dark rounded-4">
         <h1 class="display-4">More about {{course.name}}</h1>
         {% if course.modules.exists %}
         {% for module in course.modules.all %}
-                    <li class="list-group-item module-item" data-module-id="module-{{ forloop.counter }}">
+                    <li class="list-group-item module-item bg-dark" data-module-id="module-{{ forloop.counter }}">
                         <strong>{{ forloop.counter }}. {{ module.name }}</strong>
                         {% if module.lessons.exists %}
                         {% for lesson in module.lessons.all %}
@@ -82,15 +82,15 @@
     <div class="modal fade" id="joinModal" tabindex="-1" role="dialog" aria-labelledby="joinModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header text-center">
+                <div class="modal-header bg-dark text-center">
                     <h5 class="modal-title w-100" id="joinModalLabel">
                         Confirm Join
                     </h5>
                 </div>
-                <div class="modal-body align-items-center">
+                <div class="modal-body bg-dark align-items-center">
                     <p>Are you sure you want to join <strong>{{course.name}}</strong> for {% if course.price > 0 %} <strong>{{course.price}}$</strong> {% else %} FREE {% endif %}?</p>
                 </div>
-                <div class="modal-footer justify-content-center">
+                <div class="modal-footer bg-dark justify-content-center">
                     <form action="{% url 'create-request' course.id %}" method="post">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary rounded-pill">

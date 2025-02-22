@@ -3,7 +3,7 @@
 
 <div class="modal fade" id="rolesModal" tabindex="-1" aria-labelledby="rolesModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+    <div class="modal-content bg-dark">
       <div class="modal-header">
         <h5 class="modal-title" id="rolesModalLabel">Roles</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -28,7 +28,7 @@
               <small>Change</small>
             </button>       
 
-            <button class="btn btn-outline-danger rounded-pill delete-btn" 
+            <button class="btn btn-outline-primary rounded-pill delete-btn" 
                 data-id="{{ user.role.first.id }}" 
                 data-role="{{ user.role.first.get_role_display }}" 
                 data-bs-toggle="modal" data-bs-target="#deleteRoleModal">
@@ -47,7 +47,7 @@
 
 <div class="modal fade" id="createRoleModal" tabindex="-1" aria-labelledby="createRoleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content bg-dark">
           <div class="modal-header">
               <h5 class="modal-title">Create New Role</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -77,7 +77,7 @@
 
 <div class="modal fade" id="updateRoleModal" tabindex="-1" aria-labelledby="updateRoleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content bg-dark">
           <div class="modal-header">
               <h5 class="modal-title">Update Role</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -108,7 +108,7 @@
 
 <div class="modal fade" id="deleteRoleModal" tabindex="-1" aria-labelledby="deleteRoleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content bg-dark">
           <div class="modal-header">
               <h5 class="modal-title">Delete Role</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>

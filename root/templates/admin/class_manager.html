@@ -3,7 +3,7 @@
 
 <div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+    <div class="modal-content bg-dark">
       <div class="modal-header">
         <h5 class="modal-title" id="classModalLabel">Classes Manager</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -31,7 +31,7 @@
               <small>Change</small>
             </button>       
 
-            <button class="btn btn-outline-danger rounded-pill delete-btn" 
+            <button class="btn btn-outline-primary rounded-pill delete-btn" 
                 data-id="{{ class.id }}" 
                 data-name="{{ class.name }}" 
                 data-bs-toggle="modal" data-bs-target="#deleteClassModal">
@@ -50,7 +50,7 @@
 
 <div class="modal fade" id="createClassModal" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content bg-dark">
           <div class="modal-header">
               <h5 class="modal-title">Create New Class</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -88,7 +88,7 @@
 
 <div class="modal fade" id="updateClassModal" tabindex="-1" aria-labelledby="updateClassModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content bg-dark">
           <div class="modal-header">
               <h5 class="modal-title">Update Class</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -127,7 +127,7 @@
 
 <div class="modal fade" id="deleteClassModal" tabindex="-1" aria-labelledby="deleteClassModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content bg-dark">
           <div class="modal-header">
               <h5 class="modal-title">Delete Class</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
