@@ -1,44 +1,38 @@
 {% load static %}
 
 
-<div class="d-flex flex-column flex-shrink-0 p-0 bg-dark text-white" style="width: 260px; height: 100vh; position: fixed;">
-  <hr>
-  <ul class="nav fs-6 nav-pills flex-column">
-      <li class="nav-item"><a href="/" class="nav-link text-white"><i class="bi bi-house"></i> Home</a></li>
-      <li class="nav-item"><a href="/forum/" class="nav-link text-white"><i class="bi bi-chat"></i> Forum</a></li>
-      <li><a href="/courses/" class="nav-link text-white"><i class="bi bi-book"></i> Courses</a></li>
-      {% if user.teacher.exists or user.students.exists %}
-        <li><a href="/groups/" class="nav-link text-white"><i class="bi bi-people-fill"></i> Classes</a></li>
-      {% else %}
-      <li><a href="/groups/" class="nav-link text-secondary disabled"><i class="bi bi-people-fill"></i> Classes</a></li>
-      {% endif %}
-      <hr>
-      {% if user.is_authenticated %}
-        <li><a class="nav-link text-white" href="{% url 'profile' username=user.username %}"><i class="bi bi-person-circle"></i> Profile</a></li>
-        {% if user.teacher.exists %}
-          <li>
-            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#answersModal">
-              <i class="bi bi-check-circle"></i> Review Answers
-            </a>
-          </li>
+<div id="sidebar" class="bg-dark text-white position-fixed vh-100 d-flex flex-column p-1"
+     style="width: 260px; left: -260px; transition: all 0.7s;">
+    <ul class="nav flex-column">
+        <li class="nav-item"><a href="/" class="nav-link text-white"><i class="bi bi-house"></i> Home</a></li>
+        <li class="nav-item"><a href="/forum/" class="nav-link text-white"><i class="bi bi-chat"></i> Forum</a></li>
+        <li><a href="/courses/" class="nav-link text-white"><i class="bi bi-book"></i> Courses</a></li>
+        {% if user.teacher.exists or user.class_students.exists %}
+            <li><a href="/groups/" class="nav-link text-white"><i class="bi bi-people-fill"></i> Classes</a></li>
+        {% else %}
+            <li><a href="/groups/" class="nav-link text-muted disabled"><i class="bi bi-people-fill"></i> Classes</a></li>
         {% endif %}
-
-        {% if user.is_staff %}
-        <li><a class="nav-link text-white" href="/admin/"><i class="bi bi-journal-code"></i> Administration</a></li>
+        {% if user.is_authenticated %}
+        <hr>
+            <li><a class="nav-link text-white" href="{% url 'profile' username=user.username %}"><i class="bi bi-person-circle"></i> Profile</a></li>
+            {% if user.teacher.exists %}
+                <li>
+                    <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#answersModal">
+                        <i class="bi bi-check-circle"></i> Review Answers
+                    </a>
+                </li>
+            {% endif %}
+            {% if user.is_staff %}
+                <li><a class="nav-link text-white" href="/admin/"><i class="bi bi-journal-code"></i> Administration</a></li>
+            {% endif %}
+            {% if user.is_superuser %}
+                <li>
+                    <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#rolesModal"><i class="bi bi-passport"></i> Roles</a>
+                    <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#requestsModal"><i class="bi bi-cart-check"></i> Join Requests</a>
+                    <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#classModal"><i class="bi bi-person-add"></i> Classes Manager</a>
+                </li>
+            {% endif %}
         {% endif %}
-
-        {% if user.is_superuser %}
-          <li>
-            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#requestsModal">
-              <i class="bi bi-cart-check"></i> Join Requests
-            </a>
-            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#classModal">
-              <i class="bi bi-person-add"></i> Classes Manager
-            </a>
-          </li>
-        {% endif %}
-      {% endif %}
     </ul>
-
     {% include "comp/footer.html" %}
 </div>

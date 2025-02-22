@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Profile, Message
+from .models import Profile, Message, Role
 
 
 #AUTH
@@ -71,6 +71,15 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['pfp', 'desc']
+        widgets = {
+            'desc': forms.Textarea(attrs={
+                'class': 'form-control',
+                'style': 'border:none; resize:none',
+                'rows': 1,
+                'cols': 50,
+                'placeholder': 'Type here...',
+            }),
+        }
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
@@ -101,3 +110,15 @@ class MessageForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(MessageForm, self).__init__(*args, **kwargs)
+        
+        
+class RoleForm(forms.ModelForm):
+    class Meta:
+        model = Role
+        fields = ["user", "role"]
+        
+    def __init__(self, *args, **kwargs):
+        super(RoleForm, self).__init__(*args, **kwargs)
+
+        self.fields['user'].widget.attrs.update({'class': 'form-control', 'placeholder': ''})
+        self.fields['role'].widget.attrs.update({'class': 'form-control', 'placeholder': ''})

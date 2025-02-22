@@ -3,13 +3,13 @@
 
 <div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+    <div class="modal-content bg-dark">
       <div class="modal-header">
         <h5 class="modal-title" id="classModalLabel">Classes Manager</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <button class="btn btn-outline-primary mb-2 rounded-pill" data-bs-toggle="modal" data-bs-target="#createClassModal">
+        <button class="btn btn-primary mb-2 rounded-pill" data-bs-toggle="modal" data-bs-target="#createClassModal">
           <small>Add new class</small>
         </button>
         
@@ -20,7 +20,7 @@
               <strong>@{{ class.name }}</strong> <small>{{ class.course.name }}</small>
               (@{{ class.teacher.username }}, {{ class.students.count }} students)
             </p>
-            <button class="btn btn-outline-success rounded-pill update-btn" 
+            <button class="btn btn-gradient rounded-pill update-btn" 
               data-id="{{ class.id }}" 
               data-name="{{ class.name }}" 
               data-desc="{{ class.desc }}" 
@@ -31,7 +31,7 @@
               <small>Change</small>
             </button>       
 
-            <button class="btn btn-outline-danger rounded-pill delete-btn" 
+            <button class="btn btn-outline-primary rounded-pill delete-btn" 
                 data-id="{{ class.id }}" 
                 data-name="{{ class.name }}" 
                 data-bs-toggle="modal" data-bs-target="#deleteClassModal">
@@ -50,7 +50,7 @@
 
 <div class="modal fade" id="createClassModal" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content bg-dark">
           <div class="modal-header">
               <h5 class="modal-title">Create New Class</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -73,12 +73,12 @@
                       {% endfor %}
                   </select>
                   Students:
-                  <select name="students[]" class="form-control mb-2" multiple>
+                  <select name="students" class="form-control mb-2" multiple>
                     {% for student in students %}
                     <option value="{{ student.id }}">{{ student.username }}</option>
                     {% endfor %}
                   </select>     
-                  <button type="submit" class="btn btn-primary w-100">Create</button>
+                  <button type="submit" class="btn btn-primary rounded-pill w-100">Create</button>
               </form>
           </div>
       </div>
@@ -88,7 +88,7 @@
 
 <div class="modal fade" id="updateClassModal" tabindex="-1" aria-labelledby="updateClassModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content bg-dark">
           <div class="modal-header">
               <h5 class="modal-title">Update Class</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -112,12 +112,12 @@
                       {% endfor %}
                   </select>
                   Students:
-                  <select name="students[]" class="form-control mb-2" multiple>
+                  <select name="students" class="form-control mb-2" multiple>
                     {% for student in students %}
                     <option value="{{ student.id }}">{{ student.username }}</option>
                     {% endfor %}
                   </select>                
-                  <button type="submit" class="btn btn-success w-100">Update</button>
+                  <button type="submit" class="btn btn-gradient rounded-pill w-100">Update</button>
               </form>
           </div>
       </div>
@@ -127,7 +127,7 @@
 
 <div class="modal fade" id="deleteClassModal" tabindex="-1" aria-labelledby="deleteClassModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content bg-dark">
           <div class="modal-header">
               <h5 class="modal-title">Delete Class</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -136,7 +136,7 @@
               <p>Are you sure you want to delete "<strong id="delete-class-name"></strong>"?</p>
               <form id="delete-class-form" method="POST" action="">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="submit" class="btn btn-danger rounded-pill">Delete</button>
               </form>            
           </div>
       </div>

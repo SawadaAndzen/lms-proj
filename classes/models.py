@@ -19,7 +19,7 @@ class Class(models.Model):
         User, 
         blank = True, 
         limit_choices_to = {'role__role': 'student'},
-        related_name = "students"
+        related_name="class_students"
     )
     
     def __str__(self):

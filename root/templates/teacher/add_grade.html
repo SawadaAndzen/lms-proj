@@ -1,6 +1,6 @@
 <div class="modal fade" id="gradeModal" tabindex="-1" aria-labelledby="gradeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content bg-dark">
         <div class="modal-header">
           <h5 class="modal-title" id="gradeModalLabel">Assign Grade</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -10,14 +10,14 @@
             {% csrf_token %}
             <input type="hidden" name="answer_id" id="answerId">
             <label for="grade">Select Grade:</label>
-            <select class="form-select" name="grade">
+            <select class="form-select bg-secondary" name="grade">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
             </select>
-            <button type="submit" class="btn btn-success mt-2">Submit</button>
+            <button type="submit" class="btn btn-gradient rounded-pill mt-2">Submit</button>
           </form>                
         </div>
       </div>

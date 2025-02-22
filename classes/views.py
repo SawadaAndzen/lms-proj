@@ -3,11 +3,12 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from django.contrib import messages
 from django.shortcuts import redirect, get_object_or_404
 from django.db.models import Q
+from root.mixins import SecureMixin
 from .models import Class
 from .forms import ClassForm
 
 
-class MyClassesListView(ListView):
+class MyClassesListView(SecureMixin, ListView):
     model = Class
     template_name = 'groups/list.html'
     context_object_name = 'groups'
@@ -21,13 +22,13 @@ class MyClassesListView(ListView):
         return super().dispatch(request, *args, **kwargs)
     
     
-class ClassDetailView(DetailView):
+class ClassDetailView(SecureMixin, DetailView):
     model = Class
     template_name = 'groups/group.html'
     context_object_name = 'group'
     
     
-class CreateClass(View):
+class CreateClass(SecureMixin, View):
     def post(self, request, *args, **kwargs):
         form = ClassForm(request.POST)
         if form.is_valid():
@@ -52,7 +53,7 @@ class CreateClass(View):
         return JsonResponse({'success': False, 'errors': form.errors}, status=400)
 
 
-class UpdateClass(View):
+class UpdateClass(SecureMixin, View):
     def post(self, request, *args, **kwargs):
         class_id = kwargs.get("pk")
         class_instance = get_object_or_404(Class, id=class_id)
@@ -74,7 +75,7 @@ class UpdateClass(View):
         return HttpResponseBadRequest(JsonResponse({'success': False, 'errors': form.errors}))
 
 
-class DeleteClass(View):
+class DeleteClass(SecureMixin, View):
     def post(self, request, pk, *args, **kwargs):
         class_instance = get_object_or_404(Class, id=pk)
         class_instance.delete()

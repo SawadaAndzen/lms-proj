@@ -5,6 +5,7 @@ from tasks.models import TaskAnswer, Grade
 from classes.models import Class
 from courses.models import CourseInstance, JoinRequest, Course
 from tasks.models import InstanceTask
+from .models import Role
 
 
 def answers_with_grades(request):
@@ -12,7 +13,7 @@ def answers_with_grades(request):
         print(f"LOG: @{request.user.username} is a teacher!")
         
         teacher_classes = Class.objects.filter(teacher=request.user)
-        students = User.objects.filter(students__in=teacher_classes)
+        students = User.objects.filter(class_students__in=teacher_classes)
         course_instances = CourseInstance.objects.filter(course__in=teacher_classes.values_list('course', flat=True))
 
         instance_task_subquery = InstanceTask.objects.filter(
@@ -45,8 +46,13 @@ def answers_with_grades(request):
         students = User.objects.filter(role__role='student')
         courses = Course.objects.all()
         
+        users = User.objects.filter(role__isnull=False).distinct()
+        all_users = User.objects.all().distinct()
+        
         return {"join_requests": join_requests, "classes": classes, 
-                "teachers": teachers, "students": students, "courses": courses}
+                "teachers": teachers, "students": students, "courses": courses,
+                "users": users, "all_users": all_users,}
     
     return {"global_answers": [], "join_requests": [], "classes": [],
-            "teachers": [], "students": [], "courses": []}
+            "teachers": [], "students": [], "courses": [], "users": [],
+            "all_users": [],}

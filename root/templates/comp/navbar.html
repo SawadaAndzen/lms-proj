@@ -1,35 +1,39 @@
 {% load static %}
 
 
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg bg-body-tertiary py-2">
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg py-2">
   <div class="container-fluid">
+    <button id="toggleSidebar" class="btn btn-dark me-2">
+      <i class="bi bi-list"></i>
+    </button>
     <a href="/" class="d-flex align-items-center">
       <img src="{% static 'img/root/root-icon.png' %}" alt="Project Icon" width="40" height="40" class="me-2">
-      <span class="navbar-brand display-6 mb-0"><b>ROSEFLOURISH</b></span>
+      <span class="navbar-brand mb-0"><b>ROSEFLOURISH</b></span>
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"><i class="bi bi-list"></i></span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
       {% if user.is_authenticated %}
-        <div class = "nav-item dropdown d-flex align-items-center">
-          <text class = "text-secondary me-3">{{ user.profile.first.cash }}$</text>
+        <div class="nav-item dropdown d-flex align-items-center">
+          <a class="text-white fs-6 me-3 d-none d-md-inline" href="{% url 'profile' username=user.username %}">{{ user.profile.first.cash }}$</a>
           {% if user.profile.first.pfp %}
-            <img src="{{ user.profile.first.pfp.url }}" alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+            <img src="{{ user.profile.first.pfp.url }}" alt="Profile Picture" class="rounded-circle"
+                 style="width: 35px; height: 35px; object-fit: cover;">
           {% endif %}
-            <text class = "ms-2 fs-6">{{ user.first_name }}</text>
-            <form method="post" action="{% url 'logout' %}" style="display: inline;">
-              {% csrf_token %}
-              <button type="submit" class="ms-2 btn btn-link text-white p-1">
-                  <i class="bi bi-box-arrow-left"></i>
-              </button>
-          </form>          
+          <span class="ms-2 fs-6">{{ user.first_name }}</span>
+          <form method="post" action="{% url 'logout' %}" class="ms-2 d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link text-white p-1">
+              <i class="bi bi-box-arrow-left"></i>
+            </button>
+          </form>
         </div>
       {% else %}
-        <div class="d-flex ms-auto">
-          <a class="btn btn-primary rounded-pill me-2" href="/login/"><i class="bi bi-box-arrow-in-right"></i> Login</a>
-          <a class="btn btn-outline-primary rounded-pill" href="/signup/"><i class="bi bi-box-arrow-in-right"></i> Sign Up</a>
+        <div class="d-flex mt-2 justify-content-center">
+          <a class="btn btn-gradient rounded-pill me-2" href="/login/"><i class="bi bi-box-arrow-in-right"></i> Sign In</a>
+          <a class="btn btn-gradient rounded-pill" href="/signup/"><i class="bi bi-box-arrow-in-right"></i> Sign Up</a>
         </div>
       {% endif %}
     </div>

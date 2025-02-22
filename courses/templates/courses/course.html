@@ -6,10 +6,25 @@
 {% endblock title %}
 
 {% block content %}
+<style>
+    .module-button {
+        background-color:rgb(41, 41, 41);
+        color: white;
+        transition: background-color 0.4s ease-in-out, opacity 0.4s ease-in-out;
+        opacity: 1;
+    }
+    
+    .module-button.active {
+        background-color: rgb(146, 20, 20);
+        opacity: 0.9;
+    }    
+</style>
+
+
 <div class="container mt-4">
     <div class="d-flex justify-content-start align-items-center mb-3">
-        <h1 class="fw-bold">{{ course.name }}</h1>
-        <div class="progress ms-3" style="height: 25px; width: 250px;">
+        <h1 class="display-3">{{ course.name }}</h1>
+        <div class="progress ms-3 fs-6 display-6 rounded-pill" style="height: 30px; width: 300px;">
             <div class="progress-bar bg-success" role="progressbar" 
                  style="width: {{ progress }}%;" 
                  aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
@@ -17,15 +32,15 @@
             </div>
         </div>        
     </div>
-    <p class="text-muted">{{ course.desc }}</p>
+    <p class="text-muted display-5 fs-6">{{ course.desc }}</p>
 
     {% if course.modules.exists %}
     <div class="row">
         <div class="col-md-3">
-            <h4 class="fw-bold">MODULES</h4>
+            <h4 class="display-6 fs-3">MODULES</h4>
             <ul class="list-group">
                 {% for module in course.modules.all %}
-                    <li class="list-group-item module-item" data-module-id="module-{{ forloop.counter }}">
+                    <li class="list-group-item module-item module-button" data-module-id="module-{{ forloop.counter }}">
                         <strong>{{ forloop.counter }}. {{ module.name }}</strong>
                     </li>
                 {% endfor %}
@@ -34,38 +49,44 @@
 
         <div class="col-md-9">
             {% for module in course.modules.all %}
-                <div class="module-content d-none" id="module-{{ forloop.counter }}">
-                    <div class="card mb-4">
+                <div class="module-content d-none" id="module-{{ forloop.counter }}"
+                style="transition: margin-left 0.6s ease-in-out;
+                        margin-left: 100%;">
+                    <div class="card bg-dark mb-4">
                         <div class="card-header bg-dark text-white">
                             <h5 class="mb-0">MODULE {{ forloop.counter }}: {{ module.name }}</h5>
                         </div>
                         <div class="card-body">
                             {% if module.lessons.exists %}
                                 {% for lesson in module.lessons.all %}
-                                    <div class="mb-3 p-3 border rounded">
+                                    <div class="mb-3 p-3">
                                         <h4>LESSON {{ forloop.counter }}: {{ lesson.name }}</h4>
                                         <div class="d-flex flex-wrap">
+                                            {% if lesson.tasks.exists %}
                                             {% for task in lesson.tasks.all %}
-                                            <div class="text-center me-3 position-relative">
+                                            <div class="text-center ms-1 me-1">
                                                 <a href="{% url 'task-detail' pk=course.pk task_pk=task.pk %}"
-                                                   class="rounded-circle text-white d-flex align-items-center justify-content-center
-                                                   {% if task.id|stringformat:"s" in completed_tasks_ids %} bg-success {% else %} bg-secondary {% endif %}"
+                                                   class="rounded-circle text-white display-3 fs-5 fw-bold d-flex align-items-center justify-content-center
+                                                   {% if task.id|stringformat:"s" in completed_tasks_ids %} bg-primary {% else %} bg-secondary {% endif %}"
                                                    style="width: 80px; height: 80px; font-size: 20px;">
                                                     {{ forloop.counter }}
                                                 </a>
-                                                <small class="d-block"
-                                                       style="width: 100px; white-space: nowrap; 
+                                                <small class="d-block text-center text-white display-6 mt-1"
+                                                       style="font-size: 14px; width: 100px; white-space: nowrap; 
                                                        overflow: hidden; 
                                                        text-overflow: ellipsis;">
                                                     {{ task.name }}
                                                 </small>
                                             </div>
-                                        {% endfor %}                                        
+                                        {% endfor %}
+                                        {% else %}
+                                            <p class="text-muted display-3 fs-6">No tasks available in this lesson.</p>
+                                        {% endif %}                                     
                                         </div>
                                     </div>
                                 {% endfor %}
                             {% else %}
-                                <p class="text-muted">No lessons available in this module.</p>
+                                <p class="text-muted display-3 fs-6">No lessons available in this module.</p>
                             {% endif %}
                         </div>
                     </div>

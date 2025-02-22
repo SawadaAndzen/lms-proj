@@ -1,16 +1,95 @@
 {% extends "root/base.html" %}
-
+{% load static %}
 
 {% block title %}
     <title>ROSEFLOURISH</title>
 {% endblock title %}
 
 {% block content %}
-    <div class="d-flex flex-column align-items-center text-center">
-        <h1 class="display-3">HOME PAGE</h1>
+<style>
+    .position-relative {
+        position: relative;
+        z-index: 1; /* Ensures this container is above the background */
+        color: white;
+    }
+    
+    .position-relative .bg-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{% static "img/root/profile/default-header.jpg" %}') center center/cover no-repeat;
+        filter: brightness(28%); /* Dims the image */
+        z-index: -1; /* Places it behind the text content */
+        opacity: 0.4; /* Adjust the dimming further if needed */
+    }          
+</style>
+
+<body>
+<div class="position-relative justify-content-start p-3 p-md-6 m-md-3 text-center text-white">
+    <div class="bg-image rounded-4"></div>
+    <div class="col-md-9 p-lg-3 mx-auto my-4">
+      <h1 class="display-3 fw-bold">
+        <img src="{% static 'img/root/root-icon.png' %}" alt="Project Icon" width="50" height="50" class="me-2">
+        <b>ROSEFLOURISH</b>
+        <img src="{% static 'img/root/root-icon.png' %}" alt="Project Icon" width="50" height="50" class="me-2">
+        </h1>
+      <p class="text-muted mb-3">
         {% if user.is_authenticated %}
-            <p class="display-6">WELCOME, {{ user.first_name }} {{ user.last_name }}!</p>
+            <p class="lead">Hello, {{ user.first_name }} {{ user.last_name }}! We're glad to have you back.</p>
+        {% else %}
+            <p class="lead">Explore the world of ROSEFLOURISH and start study hard as you can.</p>
         {% endif %}
+
+        <p class="text-muted fs-6 fw-light">
+            ROSEFLOURISH is a modern learning management system (LMS) designed for effective organization of the educational process. The platform provides the ability to create and manage courses, modules, lessons, assignments and assessments. The system supports three user roles: students, teachers and administrators, which provides flexible access and functionality management.
+        </p>
+      </p>
+      <div class="d-flex gap-3 justify-content-center lead fw-normal">
+        {% if user.is_authenticated %}
+            <a class="btn btn-primary rounded-pill" href="{% url 'profile' username=user.username %}"><i class="bi bi-person-circle"></i> Profile</a>
+        {% else %}
+        <a class="btn btn-gradient rounded-pill" href="/login/">
+            <i class="bi bi-box-arrow-in-right"></i> Sign In
+          </a>
+          <a class="btn btn-gradient rounded-pill" href="/signup/">
+            <i class="bi bi-box-arrow-in-right"></i> Sign Up
+          </a>
+          
+          
+        {% endif %}
+        <a class="btn btn-info rounded-pill" href="/courses/"> <i class="bi bi-book"></i> Check new courses!</a>
+      </div>
+    </div>
+</div>
+
+<div class = "row">
+    <div class="col-md-auto col-lg-auto ms-auto me-auto">
+        <div class="card" style="width: 25rem; height: 15rem; position: relative; overflow: hidden;">
+            <div class="card-body bg-dark text-center align-content-center" style="position: relative; z-index: 1; color: white;">
+                <h2 class="card-title fs-4 fw-bold"><i class="bi bi-lightbulb"></i> Find an interesting course</h2>
+                <p class="card-text">Find the right course that will give you satisfaction and the necessary knowledge!</p>
+            </div>
+        </div>
     </div>
 
+    <div class="col-md-auto col-lg-auto ms-auto me-auto">
+        <div class="card" style="width: 25rem; height: 15rem; position: relative; overflow: hidden;">
+            <div class="card-body bg-dark text-center align-content-center" style="position: relative; z-index: 1; color: white;">
+                <h2 class="card-title fs-4 fw-bold"><i class="bi bi-person-video2"></i> Share your problems</h2>
+                <p class="card-text">Ask in the forum. They will definitely help you!</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-8 p-lg-3 mx-auto my-4 justify-content-center text-center">
+        <h1 class="display-3 fw-bold"><b>CHANGELOG</h1>
+        
+        <p class="text-muted display-3 fs-5 mb-3">
+            {% include "changelog/release_250222.html" %}
+        </p>
+    </div>
+</body>
 {% endblock content %}

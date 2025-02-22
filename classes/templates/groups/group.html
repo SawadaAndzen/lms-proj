@@ -7,25 +7,54 @@
 {% endblock title %}
 
 {% block content %}
-    <div class = "container d-flex justify-content-center text-center">
+    <div class = "container d-flex justify-content-between text-center">
         <div class = "col">
-            <h1>{{group.name}}</h1>
-            <p> Description: {{group.desc}}</p>
-            <p>
-                Course: {{ group.course.name }} ({{ group.course.modules.count }} module(s), {{ group.course.modules|total_lessons }} lesson(s))
-                <a href = "{% url 'course' pk=group.course.pk %}">
-                    <i class="bi bi-eye bi-primary"></i>
-                </a>
-            </p>
-            <p>Teacher: {{ group.teacher.first_name}} {{ group.teacher.last_name}} <small>@{{group.teacher.username}}</small></p>
-            <p>Students ({{group.students.count}}):</p>
-            <ul style = "list-style: none;">
-                {% for student in group.students.all %}
-                    <li>
-                        {{ student.first_name}} {{ student.last_name}} <small>@{{student.username}}</small>
-                    </li>
-                {% endfor %}
-            </ul>
+            <div class="col-md-auto col-lg-auto ms-auto me-auto">
+                <div class="card mb-4 overflow-hidden" style="max-height: 400px;">
+                    <div class="card-body bg-dark text-left">
+                        <h3>
+                            <h1 class="display-1 fs-1">{{ group.name }}</h1>
+                            <h2 class="display-1 fs-6 text-muted">{{ group.desc }}</h2>
+                            <p class="text-white">
+                                Course: {{ group.course.name }} ({{ group.course.modules.count }} module(s), {{ group.course.modules|total_lessons }} lesson(s))
+                            </p>
+                            <a class="btn btn-gradient rounded-pill" href = "{% url 'course' pk=group.course.pk %}">
+                                <i class="bi bi-clipboard-check"></i> Start
+                            </a>
+                            <a class="btn btn-outline-primary rounded-pill" href = "{% url "course-detail" pk=group.course.pk %}">
+                                <i class="bi bi-eye"></i> About
+                            </a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class = "col">
+            <div class="col-md-auto col-lg-auto ms-auto me-auto">
+                <div class="card mb-4 overflow-hidden" style="max-height: 400px;">
+                    <div class="card-body bg-dark">
+                        <h3>
+                            <h1 class="display-1 fs-1">Members</h1>
+                            <p class="display-1 text-white fs-5">
+                                <small class="text-muted">Group Teacher</small> 
+                                {{ group.teacher.first_name}} {{ group.teacher.last_name}} 
+                                <small>@{{group.teacher.username}}</small>
+                                <a class="btn btn-gradient rounded-pill fs-6" href="{% url 'profile' username=group.teacher.username %}"><i class="bi bi-person-circle"></i> Profile</a>
+                            </p>
+
+                            {% for student in group.students.all %}
+                                <p class="text-white display-1 fs-5">
+                                    <small class="text-muted">Student</small> 
+                                    {{ student.first_name}} {{ student.last_name}} 
+                                    <small>@{{student.username}}</small>
+                                    <a class="btn btn-gradient rounded-pill fs-6" href="{% url 'profile' username=student.username %}"><i class="bi bi-person-circle"></i> Profile</a>
+                                </p>
+                            {% endfor %}
+                        </h3>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock content %}
