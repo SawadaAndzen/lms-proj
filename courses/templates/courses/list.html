@@ -8,6 +8,27 @@
 {% endblock title %}
 
 {% block content %}
+<style>
+    .position-relative {
+        position: relative;
+        z-index: 1; /* Ensures this container is above the background */
+        color: white;
+    }
+    
+    .position-relative .bg-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{% static "img/root/courses/course-header.jpg" %}') center center/cover no-repeat;
+        filter: brightness(30%); /* Dims the image */
+        z-index: -1; /* Places it behind the text content */
+        opacity: 0.15; /* Adjust the dimming further if needed */
+    }    
+</style>
+
+
 {% if messages %}
 <div class="container mt-3">
     {% for message in messages %}
@@ -19,6 +40,8 @@
 {% endif %}
 
 <div class="d-flex justify-content-between align-items-start mt-3 ms-2">
+    <div class="me-2 mt-3 w-25 text-center container-sm border rounded-3">
+        <text class="display-3 fs-4">Filter</text>
     <form method="GET" class="filter-form">
         <label for="min_price" class="fs-6">Min Price:</label>
         <input class="form-control" type="number" id="min_price" name="min_price" min="0" max="9999" value="0">
@@ -26,22 +49,24 @@
         <label for="max_price" class="fs-6">Max Price:</label>
         <input class="form-control" type="number" id="max_price" name="max_price" min="0" max="9999" value="9999">
         
-        <button class="btn btn-primary mt-3" id="FilterButton"> 
+        <button class="btn btn-gradient mt-3 mb-3" id="FilterButton"> 
             <i class="bi bi-arrow-repeat"></i> Filter
         </button>
     </form>
+</div>
 
         <div class="ms-3 me-3 mt-3 list-container container-sm border rounded-3">
-            <h1 class="text-center mb-4">All Courses</h1>
+            <h1 class="text-center mb-4 display-3 fs-1">All Courses</h1>
             <div class="row" id="CoursesRow">
                 {% for course in courses %}
                     <div class="col-md-auto col-lg-auto ms-auto me-auto">
-                        <div class="card mb-4 overflow-auto" style="max-height: 400px;">
+                        <div class="card mb-4 overflow-hidden position-relative" style="max-height: 400px;">
                             <div class="card-body">
                                 <h3>
-                                    <h4>{{ course.name }}</h4>
+                                    <div class="bg-image rounded-4"></div>
+                                    <h4 class="display-4 fs-2">{{ course.name }}</h4>
                                     <h6
-                                    class = "text-secondary fs-6"
+                                    class = "text-muted fs-6"
                                     style = "width: 450px; white-space: nowrap; 
                                     overflow: hidden; 
                                     text-overflow: ellipsis;">
@@ -51,7 +76,7 @@
                                         <a class = "btn btn-primary" href = "{% url "course-detail" pk=course.pk %}">
                                             <i class="bi bi-eye bi-primary"></i> Read
                                         </a>
-                                        <text class = "text-secondary">{% if course.price > 0 %} {{course.price}}$ {% else %} FREE {% endif %}</text>
+                                        <text class = "display-4 fs-6 text-white">{% if course.price > 0 %} {{course.price}}$ {% else %} FREE {% endif %}</text>
                                     </div>
                                 </h3>
                             </div>

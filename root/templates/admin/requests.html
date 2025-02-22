@@ -15,7 +15,7 @@
                 <strong>@{{ jr.user.username }}</strong> wants to join {{ jr.course.name }} 
                 ({% if jr.course.price > 0 %}${{ jr.course.price }}{% else %}FREE{% endif %})
     
-                <button class="btn btn-outline-success rounded-pill accept-btn" data-id="{{ jr.id }}">
+                <button class="btn btn-gradient rounded-pill accept-btn" data-id="{{ jr.id }}">
                     <small>Accept</small>
                 </button>
                 <button class="btn btn-outline-warning rounded-pill decline-btn" data-id="{{ jr.id }}">
