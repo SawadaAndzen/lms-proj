@@ -24,7 +24,7 @@ document.getElementById("FilterButton").addEventListener("click", function (even
                 let priceText = course.price > 0 ? `${course.price}$` : "FREE";
                 let courseHTML = `
                     <div class="col-md-auto col-lg-auto ms-auto me-auto">
-                        <div class="card mb-4 overflow-hidden position-relative" style="max-height: 400px;">
+                        <div class="card mb-4 bg-dark overflow-hidden position-relative" style="max-height: 400px;">
                             <div class="card-body">
                                 <h3>
                                     <div class="bg-image rounded-4"></div>

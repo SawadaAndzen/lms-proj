@@ -10,10 +10,10 @@
         {% if user.teacher.exists or user.class_students.exists %}
             <li><a href="/groups/" class="nav-link text-white"><i class="bi bi-people-fill"></i> Classes</a></li>
         {% else %}
-            <li><a href="/groups/" class="nav-link text-secondary disabled"><i class="bi bi-people-fill"></i> Classes</a></li>
+            <li><a href="/groups/" class="nav-link text-muted disabled"><i class="bi bi-people-fill"></i> Classes</a></li>
         {% endif %}
-        <hr>
         {% if user.is_authenticated %}
+        <hr>
             <li><a class="nav-link text-white" href="{% url 'profile' username=user.username %}"><i class="bi bi-person-circle"></i> Profile</a></li>
             {% if user.teacher.exists %}
                 <li>

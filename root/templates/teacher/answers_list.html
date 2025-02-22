@@ -3,7 +3,7 @@
 
 <div class="modal fade" id="answersModal" tabindex="-1" aria-labelledby="answersModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+    <div class="modal-content bg-dark">
       <div class="modal-header">
         <h5 class="modal-title" id="answersModalLabel">Student Answers</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -15,7 +15,7 @@
             <strong>@{{ answer.user.username }}</strong> 
             ({{ answer.task }}) <small>{{ answer.created_at }}</small>
             <text id="task-status-{{ answer.id }}" 
-              class="{% if answer.is_done %} text-success {% else %} text-danger {% endif %}">
+              class="{% if answer.is_done %} text-success {% else %} text-primary {% endif %}">
             {% if answer.is_done %}
               <i class="bi bi-check-circle"></i>
             {% else %}
