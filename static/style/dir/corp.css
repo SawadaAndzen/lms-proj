@@ -33,6 +33,36 @@
 *::after {
   box-sizing: border-box; }
 
+  .btn-gradient {
+    position: relative;
+    background: linear-gradient(to bottom right, #D72638, #6A0DAD);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: 0.3s;
+    overflow: hidden;
+  }
+  
+.btn-gradient::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 0, 150, 0.5), rgba(0, 0, 255, 0.5));
+  filter: blur(20px);
+  z-index: -1;
+  transition: 0.5s;
+}
+
+.btn-gradient:hover::before {
+  background: linear-gradient(to bottom right, #a01bff, #ff0019);
+  filter: blur(30px);
+}
+
 html {
   font-family: sans-serif;
   line-height: 1.15;
@@ -50,7 +80,8 @@ body {
   line-height: 1.5;
   color: #dcdcfa;
   text-align: left;
-  background-color: #14141e; }
+  background-color: #14141e; 
+  background: linear-gradient(to bottom, #13131b, #3b1111);}
 
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important; }

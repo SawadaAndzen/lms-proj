@@ -26,7 +26,7 @@
             <button class="btn btn-outline-warning rounded-pill toggle-task-status"
               data-answer-id="{{ answer.id }}"
               data-url="/toggle-task-status/">
-              <small>{% if answer.is_done %}Mark as undone{% else %}Mark as done{% endif %}</small>
+              <small>{% if answer.is_done %}Undone{% else %}Done{% endif %}</small>
             </button>
       
           </p>
@@ -35,12 +35,13 @@
           {% else %}
             No files attached.
           {% endif %}
-          <p id="grade-{{ answer.id }}">
-            Grade: {% if answer.grade_value is not None %}{{ answer.grade_value }}{% else %}-{% endif %}
-          </p>        
-          <button class="btn btn-primary" data-answer-id="{{ answer.id }}" data-bs-toggle="modal" data-bs-target="#gradeModal">
+          <br>
+          <button class="btn btn-gradient rounded-pill mt-1 me-1" data-answer-id="{{ answer.id }}" data-bs-toggle="modal" data-bs-target="#gradeModal">
               Add grade
           </button>
+          <small id="grade-{{ answer.id }}">
+            Grade: {% if answer.grade_value is not None %}{{ answer.grade_value }}{% else %}-{% endif %}
+          </small>
           </div>
           {% empty %}
           <p class="text-muted">No answers yet.</p>

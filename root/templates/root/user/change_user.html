@@ -1,4 +1,5 @@
 {% extends "root/base.html" %}
+{% load static %}
 
 
 {% block title %}
@@ -7,25 +8,20 @@
 
 
 {% block content %}
-<div class="container col-xl-10 col-xxl-8 px-4 py-5">
-    <div class="row align-items-center g-lg-5 py-5">
-      <div class="col-lg-4 text-center text-lg-start">
-        <h1 class="display-6 fw-bold lh-1 text-body-emphasis mb-3">Change User Data</h1>
-        <p class="fs-4 text-center">
-          Don't be afraid of change.
-        </p>
-      </div>
-  
-      <div class="col-lg-8">
-        <form method="POST" class="p-4 p-md-5 border rounded-3">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <a href="{% url "change-password" username=user.username %}">Change Password</a>
-          <button class="w-100 mt-3 btn btn-lg btn-primary rounded-pill" type="submit">
-             <i class="bi bi-pencil"></i> Change
-            </button>
-        </form>
-      </div>
+<div class="container text-center col-xl-10 col-xxl-8 px-4 py-5">
+  <div class="row align-items-center g-lg-5 py-5">
+      <h1 class="display-4 fw-bold mb-1">
+        <img src="{% static 'img/root/root-icon.png' %}" alt="Project Icon" width="30" height="30">
+        Change User Data
+        <img src="{% static 'img/root/root-icon.png' %}" alt="Project Icon" width="30" height="30" class="me-2">
+      </h1>
+      <form method="POST" class="p-2 p-md-2 border rounded-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <a class = "mb-3" href="{% url "change-password" username=user.username %}">Change Password</a><br>
+
+        <button class="w-50 btn btn-lg btn-gradient rounded-pill mt-3" type="submit">Change</button>
+      </form>
     </div>
-  </div>
+</div>
 {% endblock content %}

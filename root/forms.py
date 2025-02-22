@@ -71,6 +71,15 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['pfp', 'desc']
+        widgets = {
+            'desc': forms.Textarea(attrs={
+                'class': 'form-control',
+                'style': 'border:none; resize:none',
+                'rows': 1,
+                'cols': 50,
+                'placeholder': 'Type here...',
+            }),
+        }
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)

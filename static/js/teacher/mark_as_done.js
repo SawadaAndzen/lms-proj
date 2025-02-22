@@ -24,10 +24,10 @@ document.querySelectorAll('.toggle-task-status').forEach(button => {
 
                 if (data.is_done) {
                     statusText.innerHTML = `<i class="bi bi-check-circle text-success"></i>`;
-                    buttonText.innerHTML = '<small>Mark as undone</small>';
+                    buttonText.innerHTML = '<small>Undone</small>';
                 } else {
                     statusText.innerHTML = `<i class="bi bi-slash-circle text-danger"></i>`;
-                    buttonText.innerHTML = '<small>Mark as done</small>';
+                    buttonText.innerHTML = '<small>Done</small>';
                 }
             }
         });

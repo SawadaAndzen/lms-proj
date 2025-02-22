@@ -13,7 +13,7 @@ def answers_with_grades(request):
         print(f"LOG: @{request.user.username} is a teacher!")
         
         teacher_classes = Class.objects.filter(teacher=request.user)
-        students = User.objects.filter(students__in=teacher_classes)
+        students = User.objects.filter(class_students__in=teacher_classes)
         course_instances = CourseInstance.objects.filter(course__in=teacher_classes.values_list('course', flat=True))
 
         instance_task_subquery = InstanceTask.objects.filter(
