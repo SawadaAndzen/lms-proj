@@ -85,7 +85,7 @@ body {
   color: #dcdcfa;
   text-align: left;
   background-color: #14141e; 
-  background: linear-gradient(to bottom, #13131b, #3b1111);}
+  background: linear-gradient(to bottom, #0f0f15,#2c0d21,#431616);}
 
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important; }

@@ -3,37 +3,42 @@
 
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg py-2">
   <div class="container-fluid">
-    <button id="toggleSidebar" class="btn btn-dark me-2">
-      <i class="bi bi-list"></i>
+    <button id="toggleSidebar" class="btn btn-dark">
+      <i class="bi bi-layout-text-sidebar"></i>
     </button>
-    <a href="/" class="d-flex align-items-center">
+    
+    <a href="/" class="position-absolute start-50 translate-middle-x d-flex align-items-center">
       <img src="{% static 'img/root/root-icon.png' %}" alt="Project Icon" width="40" height="40" class="me-2">
       <span class="navbar-brand mb-0"><b>ROSEFLOURISH</b></span>
     </a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-      <span class="navbar-toggler-icon"></span>
+      <i class="bi bi-justify"></i>
     </button>
 
-    <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+    <div class="collapse navbar-collapse mt-1 justify-content-end" id="navbarContent">
       {% if user.is_authenticated %}
+      <div class="d-flex mt-2">
         <div class="nav-item dropdown d-flex align-items-center">
-          <a class="text-white fs-6 me-3 d-none d-md-inline" href="{% url 'profile' username=user.username %}">{{ user.profile.first.cash }}$</a>
+          <a class="text-white me-3 d-none d-md-inline" style="font-size: 14px;" href="{% url 'profile' username=user.username %}">{{ user.profile.first.cash }}$</a>
           {% if user.profile.first.pfp %}
             <img src="{{ user.profile.first.pfp.url }}" alt="Profile Picture" class="rounded-circle"
                  style="width: 35px; height: 35px; object-fit: cover;">
           {% endif %}
           <span class="ms-2 fs-6">{{ user.first_name }}</span>
-          <form method="post" action="{% url 'logout' %}" class="ms-2 d-inline">
+
+          <form method="post" action="{% url 'logout' %}" class="me-2 d-inline">
             {% csrf_token %}
             <button type="submit" class="btn btn-link text-white p-1">
               <i class="bi bi-box-arrow-left"></i>
             </button>
           </form>
         </div>
+      </div>
       {% else %}
         <div class="d-flex mt-2 justify-content-center">
-          <a class="btn btn-gradient rounded-pill me-2" href="/login/"><i class="bi bi-box-arrow-in-right"></i> Sign In</a>
-          <a class="btn btn-gradient rounded-pill" href="/signup/"><i class="bi bi-box-arrow-in-right"></i> Sign Up</a>
+          <a class="btn btn-gradient btn-sm rounded-pill me-2" href="/login/"><i class="bi bi-box-arrow-in-right"></i> Sign In</a>
+          <a class="btn btn-gradient btn-sm rounded-pill" href="/signup/"><i class="bi bi-box-arrow-in-right"></i> Sign Up</a>
         </div>
       {% endif %}
     </div>

@@ -37,8 +37,8 @@ def answers_with_grades(request):
 
         return {"global_answers": answers}
     
-    elif request.user.is_authenticated and request.user.role.filter(role="admin").exists():
-        print(f"LOG: @{request.user.username} is an admin!")
+    elif request.user.is_authenticated and request.user.role.filter(role="admin").exists() or request.user.is_authenticated and request.user.is_superuser:
+        print(f"LOG: @{request.user.username} is an admin (superuser)!")
         
         join_requests = JoinRequest.objects.all().distinct()
         classes = Class.objects.all().distinct()
