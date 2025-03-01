@@ -11,10 +11,32 @@
     <div class="card shadow-0 border mt-3 col-md-11 col-lg-11" style="background-color: #343a40">
         <div class="card-body bg-dark text-center p-3">
             <h5 class="text-white">Task Description</h5>
-            <h1 class="display-6 mb-3 text-muted fs-3"> 
-                {{ task.desc }}
-            </h1>            
-            <a href="{% url 'course' pk=course.pk %}" class="btn btn-secondary rounded-pill">Back to Course</a>
+
+            <div class="d-flex justify-content-between w-100 flex-wrap">
+                <div class="text-start overflow-auto p-2 border rounded col-md-7 col-lg-6"
+                     style="max-height: 200px; background-color: rgba(255, 255, 255, 0.1);">
+                    <h1 class="display-6 mb-3 text-muted fs-3">
+                        {{ task.desc }}
+                    </h1>
+                </div>
+
+                {% if task.media %}
+                <div class="text-end col-md-5 col-lg-4">
+                    {% if task.media.url|lower|slice:'-4:' in '.jpg.jpeg.png.gif' %}
+                        <img src="{{ task.media.url }}" class="img-fluid rounded" alt="Task Media"
+                             style="max-width: 100%; height: auto;">
+                    {% else %}
+                        <a href="{{ task.media.url }}" class="btn btn-outline-light">
+                            <i class="bi bi-file-earmark"></i> View Attached File
+                        </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="mt-3">
+                <a href="{% url 'course' pk=course.pk %}" class="btn btn-secondary rounded-pill">Back to Course</a>
+            </div>
         </div>  
     </div>
 </div>
@@ -60,12 +82,15 @@
                     </div>
 
                     <form method="POST" enctype = "multipart/form-data" class="d-flex align-items-center mt-3">
-                        <div id="file-preview"></div>
+                        <div id="file-preview"></div>               
                         {% csrf_token %}
                         <div class="flex-grow-1 mt-3">
                             {{ answers_form.as_p }}
                         </div>
                         <div class="justify-items-center ms-3">
+                            <label id="clear-file" class="btn btn-outline-danger btn-sm rounded-pill">
+                                <i class="bi bi-x-circle"></i>
+                            </label>                          
                             <label for="{{ answers_form.media.id_for_label }}" class="btn btn-outline-primary rounded-pill">
                                 <i class="bi bi-paperclip"></i>
                             </label>
@@ -89,4 +114,6 @@
     </div>
 
 <script src="{% static "js/tasks/file_preview.js" %}"></script>
+<script src="{% static "js/tasks/file_required.js" %}"></script>
+<script src="{% static "js/tasks/clean_file.js" %}"></script>
 {% endblock content %}
